@@ -1,0 +1,91 @@
+### ========================================
+### AyniPay — Comercio Perfil API
+### ========================================
+
+### Variables
+@baseUrl = http://localhost:3000
+@token = <PEGAR_TOKEN_JWT_AQUI>
+
+
+
+### ========================================
+### PERFIL COMERCIO — CRUD
+### ========================================
+
+### 1. Crear perfil de comercio (solo una vez)
+POST {{baseUrl}}/comercio
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nombre_comercio": "Tacos El Güero",
+  "rubro": "comida",
+  "ubicacion": "Av. América entre 6 y 7",
+  "zona": "Central",
+  "universidad_cercana": "UMSS",
+  "tipo_comercio": "informal",
+  "horario_apertura": "08:00",
+  "horario_cierre": "22:00"
+}
+
+### Respuesta:
+### {
+###   "id_comercio": "uuid...",
+###   "id_usuario": "uuid...",
+###   "nombre_comercio": "Tacos El Güero",
+###   "rubro": "comida",
+###   "ubicacion": "Av. América entre 6 y 7",
+###   "zona": "Central",
+###   "universidad_cercana": "UMSS",
+###   "tipo_comercio": "informal",
+###   "horario_apertura": "08:00",
+###   "horario_cierre": "22:00",
+###   "fecha_registro": "2026-05-16T...",
+###   "score_actual": null,
+###   "nivel_riesgo_actual": null,
+###   "estado": "activo"
+### }
+
+
+### 2. Ver mi perfil de comercio
+GET {{baseUrl}}/comercio/my
+Authorization: Bearer {{token}}
+
+
+### 3. Ver todos los comercios (admin)
+GET {{baseUrl}}/comercio
+Authorization: Bearer {{token}}
+
+
+### 4. Ver un comercio específico
+GET {{baseUrl}}/comercio/<ID_COMERCIO>
+Authorization: Bearer {{token}}
+
+
+### 5. Actualizar perfil de comercio
+PUT {{baseUrl}}/comercio
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nombre_comercio": "Tacos El Güero",
+  "zona": "Zona norte",
+  "horario_cierre": "23:00"
+}
+
+
+### 6. Eliminar mi perfil de comercio
+DELETE {{baseUrl}}/comercio
+Authorization: Bearer {{token}}
+### ========================================
+
+
+
+### ========================================
+### NOTAS
+### ========================================
+### - POST crea el perfil (solo ejecutar una vez)
+### - Rubros válidos: "comida", "fotocopias", "transporte", "snacks", "librería"
+### - Tipo comercio: "informal", "microempresa"
+### - Score actual y nivel_riesgo se calculan con transacciones
+### - Solo el usuario owner puede ver/actualizar su perfil
