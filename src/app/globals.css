@@ -35,7 +35,7 @@
   --shadow-float: 0 20px 60px rgba(0, 0, 0, 0.55);
 }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; padding: 0; }
 
 html { 
   scroll-behavior: smooth; 

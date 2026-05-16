@@ -1,0 +1,153 @@
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  border-bottom: 1px solid var(--color-border);
+  background: #ffffff;
+}
+
+.bar {
+  width: 100%;
+  max-width: 80rem;
+  height: 4.5rem;
+  margin: 0 auto;
+  padding: 0 1.75rem 0 2.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.brandLogo {
+  width: auto;
+  height: 2.3rem;
+  object-fit: contain;
+}
+
+.desktopLinks {
+  display: none;
+  align-items: center;
+  gap: 1rem;
+}
+
+.linkSoft {
+  border-radius: 9999px;
+  padding: 0.5rem 1rem;
+  color: var(--app-text-muted);
+}
+
+.loginButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.65rem 1rem;
+}
+
+.userPill {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 9999px;
+  border: 1px solid var(--color-border);
+  background: var(--app-surface);
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.userIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  background: rgba(6, 182, 212, 0.14);
+  border: 1px solid rgba(6, 182, 212, 0.22);
+}
+
+.userName {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--app-text);
+}
+
+.userRole {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--app-text-muted);
+}
+
+.mobileToggle {
+  border-radius: 0.85rem;
+  padding: 0.5rem;
+  border: 1px solid var(--app-border);
+  background: var(--app-surface);
+  color: var(--color-accent);
+}
+
+.mobileMenu {
+  margin: 0 1rem 1rem;
+  padding: 1rem;
+  border-radius: 1.25rem;
+  border: 1px solid var(--color-border);
+  background: var(--app-surface);
+  backdrop-filter: blur(18px);
+}
+
+.mobileList {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.mobileLink {
+  padding: 0.75rem 0.85rem;
+  color: var(--app-text-muted);
+}
+
+.mobileLogin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8rem 0.95rem;
+  border-radius: 0.9rem;
+  font-weight: 700;
+}
+
+.mobileUser {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0.85rem;
+  border-radius: 0.9rem;
+  background: rgba(6, 182, 212, 0.08);
+}
+
+@media (min-width: 768px) {
+  .bar {
+    padding: 0 2rem 0 2.5rem;
+  }
+
+  .desktopLinks {
+    display: flex;
+  }
+
+  .mobileToggle,
+  .mobileMenu {
+    display: none;
+  }
+}

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import './page.css';
 import Providers from '@/providers/Providers';
 import MeshBackground from '@/components/MeshBackground';
 

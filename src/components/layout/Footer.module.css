@@ -1,0 +1,118 @@
+.footer {
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  margin-top: auto;
+}
+
+.inner {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+.grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.brandBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+}
+
+.brandRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.brandMark {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary);
+}
+
+.brandName {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.copy {
+  max-width: 24rem;
+  color: var(--color-text-muted);
+  line-height: 1.65;
+}
+
+.linksWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.25rem;
+  font-size: 0.95rem;
+}
+
+.link {
+  color: var(--color-text-muted);
+}
+
+.copyRight {
+  color: var(--color-text-dim);
+  text-align: center;
+}
+
+.socials {
+  display: flex;
+  gap: 0.7rem;
+}
+
+.social {
+  width: 2.3rem;
+  height: 2.3rem;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--app-surface);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+}
+
+.social svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .brandBlock {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .linksWrap {
+    align-items: center;
+  }
+}
