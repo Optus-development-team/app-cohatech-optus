@@ -85,7 +85,7 @@ body {
 }
 
 .gradient-text-gold {
-  background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
+  background: #6C2AD4;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -151,6 +151,9 @@ body {
 
 /* ── Canvas ── */
 .mesh-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: 0.55; }
+
+/* ── Liquid Ether Background ── */
+canvas { display: block; }
 
 /* ────── ANIMATIONS ────── */
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
