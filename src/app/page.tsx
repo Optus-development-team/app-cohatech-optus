@@ -59,7 +59,7 @@ export default function LandingPage() {
     <div className="home-root">
       <Navbar />
 
-      <main className="home-main">
+      <main className="home-main" style={{ paddingTop: '70px' }}>
         <div className="home-content-shell">
           <GradualBlur
             target="page"
@@ -99,13 +99,13 @@ export default function LandingPage() {
                       text="Finanzas que empoderan a tu comunidad"
                       as="span"
                       typingSpeed={75}
-                      pauseDuration={2100}
+                      pauseDuration={2800}
                       showCursor
                       cursorCharacter="_"
                       deletingSpeed={50}
                       cursorBlinkDuration={0.5}
                       startOnVisible
-                      loop={false}
+                      loop={true}
                       className="home-title-type"
                     />
                   </h1>
@@ -125,10 +125,10 @@ export default function LandingPage() {
                 </div>
 
                 <div className="home-stats-grid">
-                  <HeroStat value="12,000+" label="Estudiantes activos" />
-                  <HeroStat value="580+" label="Comerciantes verificados" />
-                  <HeroStat value="2.4M BOB" label="Transacciones procesadas" />
-                  <HeroStat value="98.7%" label="Satisfacción del usuario" />
+                  <HeroStat value="100 %" label="Transparencia On-Chain" />
+                  <HeroStat value="24/7" label="Disponibilidad de tus ahorros y puntos" />
+                  <HeroStat value="-5 Min." label="Tiempo para configurar tu meta de ahorro mensual" />
+                  <HeroStat value="100 %" label="Micro - ahorro inteligente" />
                 </div>
               </div>
             </section>
@@ -242,6 +242,7 @@ export default function LandingPage() {
                   <p className="home-cta-subtitle">
                     Únete a miles de estudiantes y comerciantes bolivianos construyendo una economía más justa y transparente.
                   </p>
+                  <br />
                   <Link href="/login" className="btn-primary inline-flex items-center gap-2 px-10 py-4 text-lg">
                     Acceder a la Plataforma <ArrowRight size={18} />
                   </Link>

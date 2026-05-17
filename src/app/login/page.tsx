@@ -34,7 +34,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen relative z-10 flex flex-col">
       <Navbar />
-      <div className="flex-1 flex items-center justify-center px-4 py-20">
+      <div className="flex-1 flex items-center justify-center px-4 py-20" style={{ paddingTop: 'calc(70px + 5rem)' }}>
         <div className="w-full max-w-md">
           {/* Header */}
           <div className="text-center mb-8 anim-fade-up">

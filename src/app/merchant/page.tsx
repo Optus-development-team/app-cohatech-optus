@@ -175,7 +175,7 @@ export default function MerchantDashboard() {
   const total = data.reduce((s, d) => s + d.v, 0);
 
   return (
-    <div className="min-h-screen relative z-10 pt-16 pb-8">
+    <div className="min-h-screen relative z-10 pt-16 pb-8" style={{ paddingTop: 'calc(70px + 1rem)' }}>
       <div className="max-w-6xl mx-auto px-4 py-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">

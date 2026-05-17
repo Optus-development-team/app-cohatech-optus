@@ -53,7 +53,7 @@ function QRScanner({ onBack }: { onBack: () => void }) {
   }, [state]);
 
   return (
-    <div className="min-h-screen relative z-10 pt-16 flex flex-col">
+    <div className="min-h-screen relative z-10 pt-16 flex flex-col" style={{ paddingTop: 'calc(70px + 1rem)' }}>
       <div className="flex items-center gap-3 px-4 py-4">
         <button onClick={onBack} className="w-9 h-9 glass rounded-full flex items-center justify-center">←</button>
         <h2 className="font-heading font-semibold text-lg">
@@ -138,7 +138,7 @@ export default function StudentDashboard() {
   const savingsPercent = 67;
 
   return (
-    <div className="min-h-screen relative z-10 pt-16 pb-24 md:pb-8">
+    <div className="min-h-screen relative z-10 pt-16 pb-24 md:pb-8" style={{ paddingTop: 'calc(70px + 1rem)' }}>
           {recentGain && (
         <div className="fixed top-24 right-6 z-50 pointer-events-none">
           <div className="flex items-center gap-2 px-4 py-2 rounded-full font-bold text-sm bg-[var(--color-primary)] text-white shadow-lg">
