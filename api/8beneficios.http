@@ -1,0 +1,61 @@
+### Variables
+@baseUrl = http://localhost:3000
+@token = Bearer YOUR_JWT_TOKEN_HERE
+
+### Health Check
+GET {{baseUrl}}/health
+
+###
+### BENEFICIOS ENDPOINTS
+###
+
+### 1. Get all benefits
+GET {{baseUrl}}/beneficios
+Authorization: {{token}}
+
+### 2. Get benefit by ID
+GET {{baseUrl}}/beneficios/1
+Authorization: {{token}}
+
+### 3. Create new benefit
+POST {{baseUrl}}/beneficios
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+  "nombre": "Descuento en cafetería",
+  "descripcion": "Obtén un descuento del 10% en todas las compras de la cafetería del campus",
+  "tipo": "DESCUENTO",
+  "valor": 10,
+  "comercioId": 1,
+  "activo": true
+}
+
+### 4. Update benefit
+PATCH {{baseUrl}}/beneficios/1
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+  "nombre": "Descuento actualizado",
+  "valor": 15
+}
+
+### 5. Delete benefit
+DELETE {{baseUrl}}/beneficios/1
+Authorization: {{token}}
+
+### 6. Get benefits by commerce
+GET {{baseUrl}}/beneficios/commerce/1
+Authorization: {{token}}
+
+### 7. Get user's redeemed benefits
+GET {{baseUrl}}/beneficios/redeemed
+Authorization: {{token}}
+
+### 8. Redeem benefit
+POST {{baseUrl}}/beneficios/1/redeem
+Authorization: {{token}}
+Content-Type: application/json
+
+{}

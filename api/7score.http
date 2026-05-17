@@ -1,0 +1,41 @@
+### ========================================
+### ORÁCULO DE SCORE CREDITICIO
+### ========================================
+
+### 1. Ejecutar Oráculo (Detonar evaluación masiva On-Chain)
+### LOGICA BACKEND: Recorre la base de datos de estudiantes y comercios, 
+### evalúa sus finanzas de formas distintas para estandarizar 5 variables, 
+### y manda las métricas al Smart Contract 'OptusScoreMotor' vía el Relayer.
+POST {{baseUrl}}/score/run-oracle
+Authorization: Bearer {{token}}
+
+### Respuesta Esperada:
+### {
+###   "mensaje": "Oráculo ejecutado exitosamente. Datos inyectados en Avalanche.",
+###   "detalles": [
+###     {
+###       "usuario": "Tacos El Güero",
+###       "tipo": "comercio",
+###       "score_calculado": {
+###         "volumen": 80,
+###         "frecuencia": 95,
+###         "estabilidad": 85,
+###         "recurrencia": 75,
+###         "crecimiento": 60
+###       },
+###       "tx_hash": "0xabc123..."
+###     },
+###     {
+###       "usuario": "María (Estudiante)",
+###       "tipo": "estudiante",
+###       "score_calculado": {
+###         "volumen": 45,
+###         "frecuencia": 60,
+###         "estabilidad": 90,
+###         "recurrencia": 100,
+###         "crecimiento": 50
+###       },
+###       "tx_hash": "0xdef456..."
+###     }
+###   ]
+### }

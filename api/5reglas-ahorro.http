@@ -1,0 +1,89 @@
+### ========================================
+### AyniPay — Reglas de Ahorro API
+### ========================================
+
+### Variables
+@baseUrl = http://localhost:5000
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjNjNmMjExOS03ZjgzLTRlYTYtODM4Yy03YmYzOWYyOTAyMDUiLCJjb3JyZW8iOiJlZG1pbHpvbi5sdW5hQGdtYWlsLmNvbSIsInRpcG9fdXN1YXJpbyI6ImVzdHVkaWFudGUiLCJpYXQiOjE3Nzg5OTE0NTcsImV4cCI6MTc3OTU5NjI1N30.6vKvl0IhFeTwtXCzLT0zTOZUEhqH70g8lSulyg4vZxE
+
+
+
+### ========================================
+### REGLAS DE AHORRO — CRUD
+### ========================================
+
+### 1. Crear nueva regla de ahorro
+POST {{baseUrl}}/estudiante/reglas-ahorro
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "tipo_regla": "redondeo",
+  "valor_regla": 10,
+  "redondeo_a": 100
+}
+
+### Tipos de regla:
+### - "redondeo": Redondea los gastos al múltiplo indicado en redondeo_a
+### - "porcentaje": Ahorra un porcentaje de cada gasto
+### - "fijo": Ahorra un monto fijo por transacción
+
+### Ejemplo respuesta:
+### {
+###   "id_regla": "uuid...",
+###   "id_estudiante": "uuid...",
+###   "tipo_regla": "redondeo",
+###   "valor_regla": 10,
+###   "redondeo_a": 100,
+###   "activa": true,
+###   "fecha_creacion": "2026-05-17T..."
+### }
+
+
+### 2. Listar todas mis reglas de ahorro
+GET {{baseUrl}}/estudiante/reglas-ahorro
+Authorization: Bearer {{token}}
+
+
+### 3. Ver una regla específica
+GET {{baseUrl}}/estudiante/reglas-ahorro/<ID_REGLA>
+Authorization: Bearer {{token}}
+
+
+### 4. Actualizar regla (valor, redondeo, activar/desactivar)
+PUT {{baseUrl}}/estudiante/reglas-ahorro/<ID_REGLA>
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "valor_regla": 15,
+  "redondeo_a": 50
+}
+
+
+### 5. Desactivar una regla
+PUT {{baseUrl}}/estudiante/reglas-ahorro/<ID_REGLA>
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "activa": "false"
+}
+
+
+### 6. Eliminar una regla
+DELETE {{baseUrl}}/estudiante/reglas-ahorro/<ID_REGLA>
+Authorization: Bearer {{token}}
+### ========================================
+
+
+
+### ========================================
+### NOTAS
+### ========================================
+### - tipo_regla: "redondeo", "porcentaje", "fijo"
+### - valor_regla: 0 - 100 (porcentaje o monto)
+### - redondeo_a: solo para tipo "redondeo" (ej: 100 = redondea a múltiplos de 100)
+### - activa: true/false (para pausar sin eliminar)
+### - Se pueden crear múltiples reglas del mismo tipo
+### - Las reglas se aplican automáticamente al registrar transacciones

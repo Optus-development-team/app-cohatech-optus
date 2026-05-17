@@ -4,7 +4,9 @@ import Link from "next/link";
 import {
   Wallet,
   Target,
+  PiggyBank,
   CreditCard,
+  Gift,
   Settings,
   LogOut
 } from "lucide-react";
@@ -20,6 +22,8 @@ const navItems = [
   { id: "presupuesto", label: "Presupuesto", icon: Wallet },
   { id: "metaAhorro", label: "Meta Ahorro", icon: Target },
   { id: "billetera", label: "Billetera", icon: CreditCard },
+  { id: "reglasAhorro", label: "Reglas Ahorro", icon: PiggyBank },
+  { id: "beneficios", label: "Canje Beneficio", icon: Gift },
   { id: "config", label: "Configuración", icon: Settings },
 ];
 

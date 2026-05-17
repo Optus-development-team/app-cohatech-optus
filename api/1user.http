@@ -6,7 +6,7 @@
 ### ========================================
 
 ### Variables globales
-@baseUrl = https://dot-revealable-telescopically.ngrok-free.dev/
+@baseUrl = http://localhost:3000
 @token = <PEGAR_TOKEN_AQUI>
 
 
@@ -15,7 +15,21 @@
 ### AUTH — Público (sin token)
 ### ========================================
 
-### 1. Registrar usuario (estudiante)
+### 1. Solicitar OTP WhatsApp
+POST {{baseUrl}}/user/phone/otp
+Content-Type: application/json
+
+{
+  "phone": "59177242197"
+}
+
+### Ejemplo de respuesta:
+### {
+###     "codigo": "NHPE",
+###     "expiracion": "2026-05-17T10:55:47.536Z"
+### }
+
+### 2. Registrar usuario (estudiante)
 POST {{baseUrl}}/user/register
 Content-Type: application/json
 
@@ -27,7 +41,7 @@ Content-Type: application/json
   "tipo_usuario": "estudiante"
 }
 
-### 2. Registrar usuario (comercio)
+### 3. Registrar usuario (comercio)
 POST {{baseUrl}}/user/register
 Content-Type: application/json
 
@@ -38,8 +52,18 @@ Content-Type: application/json
   "tipo_usuario": "comercio"
 }
 
+### 4. Registrar usuario (entidad financiera)
+POST {{baseUrl}}/user/register
+Content-Type: application/json
 
-### 4. Login — Recibes JWT (úsalo en @token)
+{
+  "nombre": "Banco Prueba",
+  "correo": "banco@example.com",
+  "password": "123456",
+  "tipo_usuario": "entidad"
+}
+
+### 5. Login — Recibes JWT (úsalo en @token)
 POST {{baseUrl}}/user/login
 Content-Type: application/json
 
@@ -67,19 +91,19 @@ Content-Type: application/json
 ### USER — Protegido (requiere @token)
 ### ========================================
 
-### 5. Mi perfil (del token JWT)
+### 6. Mi perfil (del token JWT)
 GET {{baseUrl}}/user/profile
 Authorization: Bearer {{token}}
 
-### 6. Listar todos los usuarios
+### 7. Listar todos los usuarios
 GET {{baseUrl}}/user
 Authorization: Bearer {{token}}
 
-### 7. Obtener usuario por ID
+### 8. Obtener usuario por ID
 GET {{baseUrl}}/user/<UUID_DEL_USUARIO>
 Authorization: Bearer {{token}}
 
-### 8. Actualizar usuario
+### 9. Actualizar usuario
 PUT {{baseUrl}}/user/<UUID_DEL_USUARIO>
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -89,7 +113,7 @@ Content-Type: application/json
   "telefono": "555-0999"
 }
 
-### 9. Actualizar password
+### 10. Actualizar password
 PUT {{baseUrl}}/user/<UUID_DEL_USUARIO>
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -98,7 +122,7 @@ Content-Type: application/json
   "password": "nueva_contraseña"
 }
 
-### 10. Eliminar usuario (soft delete)
+### 11. Eliminar usuario (soft delete)
 DELETE {{baseUrl}}/user/<UUID_DEL_USUARIO>
 Authorization: Bearer {{token}}
 ### ========================================

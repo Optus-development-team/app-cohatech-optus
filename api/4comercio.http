@@ -3,7 +3,7 @@
 ### ========================================
 
 ### Variables
-@baseUrl = https://dot-revealable-telescopically.ngrok-free.dev/
+@baseUrl = http://localhost:5000
 @token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMjU4ZTI2NC1iOWY5LTQ3ODEtYmE5OC1lODcyZDYzNjAyNTQiLCJjb3JyZW8iOiJjb21lcmNpYW50ZUBnbWFpbC5jb20iLCJ0aXBvX3VzdWFyaW8iOiJjb21lcmNpbyIsImlhdCI6MTc3ODk4NDEwMiwiZXhwIjoxNzc5NTg4OTAyfQ.5fJGu5cYgCH-bAIgKnpcGby_FPjqSRi3Kz8SGqTPcc8
 
 
