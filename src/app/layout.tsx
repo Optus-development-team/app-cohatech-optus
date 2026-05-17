@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import './page.css';
 import Providers from '@/providers/Providers';
-import MeshBackground from '@/components/MeshBackground';
+import GameOfLifeBackground from '@/components/ui/GameOfLifeBackground';
 
 export const metadata: Metadata = {
   title: 'OptusCocha — Finanzas Universitarias Bolivia',
@@ -20,21 +20,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="theme-color" content="#0a0a14" />
       </head>
       <body>
-        {/* Ambient glow orbs */}
-        <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
-          <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full opacity-[0.07]"
-            style={{ background: 'radial-gradient(circle, #7c3aed, transparent 70%)', filter: 'blur(60px)' }} />
-          <div className="absolute bottom-[-15%] right-[-10%] w-[500px] h-[500px] rounded-full opacity-[0.07]"
-            style={{ background: 'radial-gradient(circle, #06b6d4, transparent 70%)', filter: 'blur(60px)' }} />
-          <div className="absolute top-[40%] left-[50%] -translate-x-1/2 w-[400px] h-[400px] rounded-full opacity-[0.04]"
-            style={{ background: 'radial-gradient(circle, #f59e0b, transparent 70%)', filter: 'blur(50px)' }} />
+        {/* Game of Life Background - Principal */}
+        <div className="fixed inset-0 z-0 pointer-events-none">
+          <GameOfLifeBackground
+            cellSize={16}
+            color="#9353d0"
+            speed={0.4}
+            density={0.09}
+            fillOpacity={1.0}
+          />
         </div>
 
-        <MeshBackground />
-
-        <Providers>
-          {children}
-        </Providers>
+        <div className="relative z-10">
+          <Providers>
+            {children}
+          </Providers>
+        </div>
       </body>
     </html>
   );
