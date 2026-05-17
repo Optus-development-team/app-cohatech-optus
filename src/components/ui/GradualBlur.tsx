@@ -145,7 +145,7 @@ const useResponsiveDimension = (
     return () => window.removeEventListener('resize', debouncedCalc);
   }, [responsive, config, key]);
 
-  return responsive ? val : (config as any)[key];
+  return responsive ? val : config[key];
 };
 
 const useIntersectionObserver = (ref: React.RefObject<HTMLDivElement>, shouldObserve: boolean = false) => {
@@ -258,7 +258,7 @@ const GradualBlur: React.FC<GradualBlurProps> = props => {
     return baseStyle;
   }, [config, responsiveHeight, responsiveWidth, isVisible, edgeFactor]);
 
-  const { hoverIntensity, animated, onAnimationComplete, duration } = config as any;
+  const { hoverIntensity, animated, onAnimationComplete, duration } = config as Required<GradualBlurProps>;
 
   useEffect(() => {
     if (config.target !== 'page' || !config.followScroll) return;
@@ -328,8 +328,8 @@ const GradualBlur: React.FC<GradualBlurProps> = props => {
 
 const GradualBlurMemo = React.memo(GradualBlur);
 GradualBlurMemo.displayName = 'GradualBlur';
-(GradualBlurMemo as any).PRESETS = PRESETS;
-(GradualBlurMemo as any).CURVE_FUNCTIONS = CURVE_FUNCTIONS;
+(GradualBlurMemo as React.FC<GradualBlurProps> & { PRESETS: typeof PRESETS; CURVE_FUNCTIONS: typeof CURVE_FUNCTIONS }).PRESETS = PRESETS;
+(GradualBlurMemo as React.FC<GradualBlurProps> & { PRESETS: typeof PRESETS; CURVE_FUNCTIONS: typeof CURVE_FUNCTIONS }).CURVE_FUNCTIONS = CURVE_FUNCTIONS;
 
 export default GradualBlurMemo;
 
