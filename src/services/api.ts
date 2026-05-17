@@ -57,6 +57,101 @@ export interface MetaAhorro {
   porcentaje_avance: number;
 }
 
+export interface ReglaAhorro {
+  id_regla: string;
+  id_estudiante: string;
+  tipo_regla: "redondeo" | "porcentaje" | "fijo";
+  valor_regla: number;
+  redondeo_a?: number;
+  activa: boolean;
+  fecha_creacion: string;
+}
+
+export async function getReglasAhorro(): Promise<ReglaAhorro[]> {
+  const res = await fetch(`${API_BASE_URL}/estudiante/reglas-ahorro`, {
+    headers: { ...getAuthHeader() },
+  });
+
+  if (!res.ok) return [];
+
+  return res.json();
+}
+
+export async function getReglaAhorro(id: string): Promise<ReglaAhorro | null> {
+  const res = await fetch(`${API_BASE_URL}/estudiante/reglas-ahorro/${id}`, {
+    headers: { ...getAuthHeader() },
+  });
+
+  if (!res.ok) return null;
+
+  return res.json();
+}
+
+export async function createReglaAhorro(data: {
+  tipo_regla: "redondeo" | "porcentaje" | "fijo";
+  valor_regla: number;
+  redondeo_a?: number;
+}): Promise<ReglaAhorro> {
+  const res = await fetch(`${API_BASE_URL}/estudiante/reglas-ahorro`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...getAuthHeader(),
+    },
+    body: JSON.stringify(data),
+  });
+
+  const result = await res.json();
+
+  if (!res.ok) {
+    throw new Error(result.message || "Error al crear regla de ahorro");
+  }
+
+  return result;
+}
+
+export async function updateReglaAhorro(
+  id: string,
+  data: {
+    valor_regla?: number;
+    redondeo_a?: number;
+    activa?: boolean;
+  }
+): Promise<ReglaAhorro> {
+  const body = data.activa !== undefined
+    ? { ...data, activa: data.activa ? "true" : "false" }
+    : data;
+
+  const res = await fetch(`${API_BASE_URL}/estudiante/reglas-ahorro/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      ...getAuthHeader(),
+    },
+    body: JSON.stringify(body),
+  });
+
+  const result = await res.json();
+
+  if (!res.ok) {
+    throw new Error(result.message || "Error al actualizar regla de ahorro");
+  }
+
+  return result;
+}
+
+export async function deleteReglaAhorro(id: string): Promise<void> {
+  const res = await fetch(`${API_BASE_URL}/estudiante/reglas-ahorro/${id}`, {
+    method: "DELETE",
+    headers: { ...getAuthHeader() },
+  });
+
+  if (!res.ok) {
+    const result = await res.json();
+    throw new Error(result.message || "Error al eliminar regla de ahorro");
+  }
+}
+
 export async function login(data: LoginData): Promise<LoginResponse> {
   const res = await fetch(`${API_BASE_URL}/user/login`, {
     method: "POST",
@@ -343,4 +438,131 @@ export async function updateComercio(data: Partial<{
   }
 
   return result;
+}
+
+export interface SaldosWallet {
+  usuario_id: string;
+  wallet_address: string;
+  fiat_bs: number;
+  puntos_ayni: number;
+  credito_usdc: number;
+  credito_eurc: number;
+}
+
+export async function getSaldos(): Promise<SaldosWallet | null> {
+  const res = await fetch(`${API_BASE_URL}/transaccion/saldos`, {
+    headers: { ...getAuthHeader() },
+  });
+
+  if (!res.ok) return null;
+
+  return res.json();
+}
+
+export interface TransaccionPago {
+  id_usuario: string;
+  id_comercio?: string;
+  monto_pago: number;
+  categoria_gasto: string;
+}
+
+export interface PagoQRResponse {
+  monto_debitado: number;
+  ahorro_generado: number;
+  meta_afectada: string;
+  meta_completada: boolean;
+  puntos_ganados: number;
+  tx_hash_gamificacion: string | null;
+}
+
+export async function postPagoQR(data: TransaccionPago): Promise<PagoQRResponse> {
+  const res = await fetch(`${API_BASE_URL}/transaccion/pago-qr`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...getAuthHeader(),
+    },
+    body: JSON.stringify(data),
+  });
+
+  const result = await res.json();
+
+  if (!res.ok) {
+    throw new Error(result.message || "Error al realizar pago");
+  }
+
+  return result;
+}
+
+export interface Beneficio {
+  id: number;
+  nombre: string;
+  descripcion: string;
+  tipo: "DESCUENTO" | "CASHBACK" | "PRODUCTO_GRATIS" | "SERVICIO";
+  valor: number;
+  comercioId: number;
+  comercioNombre?: string;
+  activo: boolean;
+  fecha_creacion?: string;
+}
+
+export interface BeneficioCanjeado {
+  id: number;
+  beneficioId: number;
+  usuarioId: string;
+  fecha_canje: string;
+  beneficio?: Beneficio;
+}
+
+export async function getBeneficios(): Promise<Beneficio[]> {
+  const res = await fetch(`${API_BASE_URL}/beneficios`, {
+    headers: { ...getAuthHeader() },
+  });
+
+  if (!res.ok) return [];
+
+  return res.json();
+}
+
+export async function getBeneficioById(id: number): Promise<Beneficio | null> {
+  const res = await fetch(`${API_BASE_URL}/beneficios/${id}`, {
+    headers: { ...getAuthHeader() },
+  });
+
+  if (!res.ok) return null;
+
+  return res.json();
+}
+
+export async function canjearBeneficio(id: number): Promise<{
+  tokens_quemados: number;
+  id_beneficio: number;
+  tx_hash: string;
+}> {
+  const res = await fetch(`${API_BASE_URL}/beneficios/${id}/redeem`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...getAuthHeader(),
+    },
+    body: JSON.stringify({}),
+  });
+
+  const result = await res.json();
+
+  if (!res.ok) {
+    throw new Error(result.message || "Error al canjear beneficio");
+  }
+
+  return result;
+}
+
+export async function getMisBeneficiosCanjeados(): Promise<BeneficioCanjeado[]> {
+  const res = await fetch(`${API_BASE_URL}/beneficios/redeemed`, {
+    headers: { ...getAuthHeader() },
+  });
+
+  if (!res.ok) return [];
+
+  return res.json();
 }

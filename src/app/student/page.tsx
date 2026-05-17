@@ -1,11 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { CreditCard, Settings } from "lucide-react";
+import { Settings } from "lucide-react";
 import {
   StudentLayout,
   PresupuestoView,
-  MetaAhorroView
+  MetaAhorroView,
+  ReglasAhorroView,
+  BilleteraView,
+  BeneficiosView
 } from "@/components/student";
 import {
   getAuth,
@@ -94,6 +97,10 @@ export default function StudentPanel() {
         return <MetaAhorroView />;
       case "billetera":
         return <BilleteraView />;
+      case "reglasAhorro":
+        return <ReglasAhorroView />;
+      case "beneficios":
+        return <BeneficiosView />;
       case "config":
         return <ConfigView />;
       default:
@@ -110,23 +117,6 @@ export default function StudentPanel() {
     >
       {renderContent()}
     </StudentLayout>
-  );
-}
-
-function BilleteraView() {
-  return (
-    <div className="panel-card">
-      <div className="text-center mb-8">
-        <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-[#8B5CF6]/20 flex items-center justify-center">
-          <CreditCard className="text-[#a78bfa]" size={40} />
-        </div>
-        <h2 className="panel-title text-white text-2xl mb-2">Mi Billetera</h2>
-        <p className="panel-subtitle">Gestiona tus métodos de pago y tarjetas</p>
-      </div>
-      <div className="text-center text-gray-500 py-8">
-        Próximamente...
-      </div>
-    </div>
   );
 }
 

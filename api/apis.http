@@ -1,4 +1,4 @@
-@baseUrl = https://dot-revealable-telescopically.ngrok-free.dev/
+@baseUrl = http://localhost:3000
 
 ### Get current user profile
 GET {{baseUrl}}/

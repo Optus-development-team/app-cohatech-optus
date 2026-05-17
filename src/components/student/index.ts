@@ -7,3 +7,6 @@ export { default as MetaAhorroView } from "./MetaAhorroView";
 export { default as MetaAhorroForm } from "./MetaAhorroForm";
 export { default as MetaAhorroCard } from "./MetaAhorroCard";
 export { default as MetaAhorroEmpty } from "./MetaAhorroEmpty";
+export { default as ReglasAhorroView } from "./ReglasAhorroView";
+export { default as BilleteraView } from "./BilleteraView";
+export { default as BeneficiosView } from "./BeneficiosView";

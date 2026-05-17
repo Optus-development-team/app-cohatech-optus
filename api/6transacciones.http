@@ -1,0 +1,125 @@
+### ========================================
+### AyniPay — Wallet y Transacciones API
+### ========================================
+
+### Variables
+@baseUrl = http://localhost:3000
+@token = <PEGAR_TOKEN_JWT_AQUI>
+
+
+
+### ========================================
+### BILLETERA Y SALDOS (MULTI-ASSET)
+### ========================================
+
+### 1. Consultar todos mis saldos (Estudiante o Comercio)
+### LOGICA BACKEND: Lee los Bs de PostgreSQL y hace consultas de solo lectura 
+### on-chain vía Ethers.js para AyniCoins, USDC y EURC.
+GET {{baseUrl}}/transaccion/saldos
+Authorization: Bearer {{token}}
+
+
+### Respuesta Esperada (Estudiante y comercio):
+### {
+###   "usuario_id": "uuid-comercio...",
+###   "wallet_address": "0x456def...",
+###   "fiat_bs": 1500.00,
+###   "puntos_ayni": 0,
+###   "credito_usdc": 100,
+###   "credito_eurc": 0
+### }
+
+
+
+### ========================================
+### TRANSACCIONES FIAT Y AHORRO (POSTGRESQL -> RELAYER)
+### ========================================
+
+### 2. Simular un Pago por QR (Estudiante -> Comercio)
+### LOGICA DE NEGOCIO:
+### El backend resta Bs al estudiante y suma al comercio.
+### Aplica redondeo (13.50 a 14.00), enviando 0.50 Bs a la meta activa.
+### SI la meta_actual >= meta_objetivo, lanza orden al Relayer para 
+### mintear AyniCoins como premio al esfuerzo completado.
+POST {{baseUrl}}/transaccion/pago-qr
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "id_usuario": "<UUID_DEL_USUARIO_DESTINO>",
+  "id_comercio": "<UUID_DEL_COMERCIO_DESTINO>", // Opcional
+  "monto_pago": 13.50,
+  "categoria_gasto": "comida"
+}
+
+### Respuesta Esperada (NO se completó la meta aún):
+### {
+###   "monto_debitado": 14.00,
+###   "ahorro_generado": 0.50,
+###   "meta_afectada": "Pasajes",
+###   "meta_completada": false,
+###   "puntos_ganados": 0,
+###   "tx_hash_gamificacion": null
+### }
+
+### Respuesta Esperada (Si se completó la meta al pagar):
+### {
+###   "monto_debitado": 14.00,
+###   "ahorro_generado": 0.50,
+###   "meta_afectada": "Pasajes",
+###   "meta_completada": true,  <-- Disparador del pivote
+###   "puntos_ganados": 10,
+###   "tx_hash_gamificacion": "0xabc123...hash_del_relayer_fuji"
+### }
+
+
+
+### ========================================
+### TRANSACCIONES CRYPTO (ON-CHAIN VIA RELAYER)
+### ========================================
+
+### 3. Canjear Puntos por Beneficio (Estudiante)
+### LOGICA BACKEND: El usuario desea canjear 5 AyniCoins por 
+### fotocopias. El backend ordena al Relayer de OpenZeppelin 
+### ejecutar 'consumePoints()' usando su rol de administrador.
+POST {{baseUrl}}/transaccion/canjear-puntos
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "id_comercio": "<UUID_DEL_COMERCIO_DESTINO>",
+  "id_beneficio": "<UUID_DEL_BENEFICIO_PROMOCION>",
+  "monto_puntos": 5
+}
+
+### Respuesta Esperada:
+### {
+###   "tokens_quemados": 5,
+###   "id_beneficio": "uuid-beneficio...",
+###   "tx_hash": "0xdef456...hash_burn"
+### }
+
+
+
+### 4. Desembolsar Microcrédito (SOLO ROL ENTIDAD FINANCIERA)
+### LOGICA BACKEND: La entidad financiera aprueba la solicitud on-chain.
+### El backend le pasa la orden al Relayer para que llame 
+### 'approveAndDisburse()' en el contrato de Lending usando stablecoins.
+POST {{baseUrl}}/transaccion/desembolsar-credito
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "id_usuario": "<UUID_DEL_USUARIO_DESTINO>",
+  "monto": 100,
+  "moneda": "USDC"
+}
+
+### Respuesta Esperada:
+### {
+###   "comercio": "Tacos El Güero",
+###   "wallet_destino": "0x456def...",
+###   "monto_liquidez": 100,
+###   "moneda_desembolso": "USDC",
+###   "tx_hash": "0xghi789...hash_lending"
+### }
