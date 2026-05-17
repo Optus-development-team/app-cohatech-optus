@@ -3,6 +3,7 @@ import './globals.css';
 import './page.css';
 import Providers from '@/providers/Providers';
 import GameOfLifeBackground from '@/components/ui/GameOfLifeBackground';
+import Navbar from '@/components/Navbar';
 
 export const metadata: Metadata = {
   title: "Cohatech",
