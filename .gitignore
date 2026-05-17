@@ -2,6 +2,7 @@ node_modules
 .next
 out
 dist
+AGENTS.md
 coverage
 AGENTS.md
 pnpm-lock.yaml

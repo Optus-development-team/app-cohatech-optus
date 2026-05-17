@@ -1,0 +1,73 @@
+### ========================================
+### AyniPay — Comercio Perfil API
+### ========================================
+
+### Variables
+@baseUrl = https://dot-revealable-telescopically.ngrok-free.dev/
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMjU4ZTI2NC1iOWY5LTQ3ODEtYmE5OC1lODcyZDYzNjAyNTQiLCJjb3JyZW8iOiJjb21lcmNpYW50ZUBnbWFpbC5jb20iLCJ0aXBvX3VzdWFyaW8iOiJjb21lcmNpbyIsImlhdCI6MTc3ODk4NDEwMiwiZXhwIjoxNzc5NTg4OTAyfQ.5fJGu5cYgCH-bAIgKnpcGby_FPjqSRi3Kz8SGqTPcc8
+
+
+
+### ========================================
+### PERFIL COMERCIO — CRUD
+### ========================================
+
+### 1. Crear perfil de comercio (solo una vez)
+POST {{baseUrl}}/comercio
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nombre_comercio": "Tacos El Güero",
+  "rubro": "comida",
+  "ubicacion": "Av. América entre 6 y 7",
+  "zona": "Central",
+  "universidad_cercana": "UMSS",
+  "tipo_comercio": "informal",
+  "horario_apertura": "08:00",
+  "horario_cierre": "22:00"
+}
+
+### 2. Ver mi perfil de comercio
+GET {{baseUrl}}/comercio/profile
+Authorization: Bearer {{token}}
+
+
+### 3. Ver todos los comercios (solo entidades financieras/admin)
+GET {{baseUrl}}/comercio/admin/all
+Authorization: Bearer {{token}}
+
+
+### 4. Ver un comercio específico
+GET {{baseUrl}}/comercio/<ID_COMERCIO>
+Authorization: Bearer {{token}}
+
+
+### 5. Actualizar perfil de comercio
+PUT {{baseUrl}}/comercio/profile
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nombre_comercio": "Tacos El Güero",
+  "zona": "Zona norte",
+  "horario_cierre": "23:00"
+}
+
+
+### 6. Eliminar mi perfil de comercio
+DELETE {{baseUrl}}/comercio/profile
+Authorization: Bearer {{token}}
+### ========================================
+
+
+
+### ========================================
+### NOTAS
+### ========================================
+### - POST crea el perfil (solo ejecutar una vez)
+### - Rubro: cualquier texto válido (ej: "comida", "librería", "cafetería", etc.)
+### - Tipo comercio: "informal", "microempresa"
+### - Score actual y nivel_riesgo se calculan con transacciones
+### - Solo el usuario owner puede ver/actualizar su perfil
+### - GET /comercio/admin/all solo accesible para usuarios tipo "entidad"

@@ -1,0 +1,73 @@
+### ========================================
+### AyniPay — Estudiante Presupuesto API
+### ========================================
+
+### Variables
+@baseUrl = https://dot-revealable-telescopically.ngrok-free.dev/
+@token = <PEGAR_TOKEN_JWT_AQUI>
+
+
+
+### ========================================
+### PRESUPUESTO ESTUDIANTE — Protegido
+### ========================================
+
+### 1. Crear presupuesto (PRIMERO - solo una vez)
+POST {{baseUrl}}/estudiante/presupuesto
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "universidad": "UMSS",
+  "carrera": "Ing. Sistemas",
+  "presupuesto_semanal": 150,
+  "presupuesto_mensual": 600
+}
+
+### Ejemplo de respuesta:
+### {
+###   "id_estudiante": "uuid...",
+###   "presupuesto_semanal": 150,
+###   "presupuesto_mensual": 600,
+###   "ahorro_total": 0,
+###   "nivel_actual": "Explorador",
+###   "puntos_actuales": 0
+### }
+
+
+### 2. Obtener mi presupuesto actual
+GET {{baseUrl}}/estudiante/presupuesto
+Authorization: Bearer {{token}}
+
+
+### 3. Actualizar presupuesto (semanal)
+PUT {{baseUrl}}/estudiante/presupuesto
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "presupuesto_semanal": 200
+}
+
+
+### 4. Actualizar presupuesto (semanal y mensual)
+PUT {{baseUrl}}/estudiante/presupuesto
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "presupuesto_semanal": 200,
+  "presupuesto_mensual": 800
+}
+### ========================================
+
+
+
+### ========================================
+### NOTAS
+### ========================================
+### - POST crea el perfil (solo ejecutar una vez)
+### - PUT actualiza presupuesto existente
+### - Universidad válida: "UMSS", "UPSA", "Unicen", "UAB", "另其他"
+### - Presupuesto semanal: 0 - 10,000 Bs
+### - Presupuesto mensual: 0 - 50,000 Bs

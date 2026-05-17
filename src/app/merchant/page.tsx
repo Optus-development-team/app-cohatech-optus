@@ -1,152 +1,88 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { TrendingUp, DollarSign, Users, Zap, Bell, ShieldCheck, CreditCard, ArrowUpRight, BarChart2, LogOut, X, ChevronRight, CheckCircle, Percent, Calendar, Shield, ArrowLeft } from 'lucide-react';
-import { useAuth } from '@/context/AuthContext';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { useState, useEffect } from "react";
+import {
+  MerchantLayout,
+  MerchantProfileView
+} from "@/components/merchant";
+import {
+  getAuth,
+  clearAuth,
+} from "@/services/api";
 
-/* ── Trust Gauge ── */
-function TrustGauge({ score }: { score: number }) {
-  const size = 220, cx = 110, cy = 110, r = 88;
-  const circ = Math.PI * r;
-  const dashOffset = circ - (score / 1000) * circ;
-  const color = score < 400 ? 'var(--color-danger)' : score < 600 ? 'var(--color-gold)' : score < 800 ? 'var(--color-accent)' : 'var(--color-success)';
-  const label = score < 400 ? 'Bajo Riesgo' : score < 600 ? 'Moderado' : score < 800 ? 'Confiable' : 'Excelente';
+interface User {
+  id_usuario: string;
+  nombre: string;
+  correo: string;
+  tipo_usuario: string;
+  estado: string;
+}
+
+export default function MerchantPanel() {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("perfil");
+
+  useEffect(() => {
+    const auth = getAuth();
+    if (auth) {
+      setUser(auth.user);
+    }
+    setLoading(false);
+  }, []);
+
+  const handleLogout = () => {
+    clearAuth();
+    window.location.href = "/login";
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#0f0a1a]">
+        <div className="w-8 h-8 border-4 border-[#7c3aed] border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (!user) {
+    if (typeof window !== "undefined") {
+      window.location.href = "/login";
+    }
+    return null;
+  }
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case "perfil":
+        return <MerchantProfileView />;
+      case "config":
+        return <ConfigView />;
+      default:
+        return null;
+    }
+  };
 
   return (
-    <div className="flex flex-col items-center">
-      <svg width={size} height={size / 2 + 24} viewBox={`0 0 ${size} ${size / 2 + 24}`}>
-        <path d={`M 16 ${cy} A ${r} ${r} 0 0 1 ${size - 16} ${cy}`} 
-          fill="none" stroke="var(--color-border)" strokeWidth={18} strokeLinecap="round" />
-        <path d={`M 16 ${cy} A ${r} ${r} 0 0 1 ${size - 16} ${cy}`} 
-          fill="none" stroke={color} strokeWidth={18} strokeLinecap="round"
-          strokeDasharray={circ} strokeDashoffset={dashOffset} 
-          style={{ transition: 'stroke-dashoffset 1s ease-in-out' }} />
-        <text x={cx} y={cy + 8} textAnchor="middle" 
-          style={{ fontFamily: 'Inter,sans-serif', fontSize: 42, fontWeight: 800, fill: color }}>
-          {score}
-        </text>
-        <text x={cx} y={cy + 26} textAnchor="middle" 
-          style={{ fontFamily: 'Inter,sans-serif', fontSize: 12, fill: 'var(--color-text-muted)' }}>
-          TRUST SCORE
-        </text>
-      </svg>
-      <span className="badge mt-2" style={{ backgroundColor: `${color}15`, color, borderColor: `${color}30` }}>
-        {label}
-      </span>
-    </div>
+    <MerchantLayout
+      userName={user.nombre}
+      activeTab={activeTab}
+      onTabChange={setActiveTab}
+      onLogout={handleLogout}
+    >
+      {renderContent()}
+    </MerchantLayout>
   );
 }
 
-/* ── Loan Modal ── */
-function LoanModal({ onClose }: { onClose: () => void }) {
-  const [step, setStep] = useState<1 | 2 | 3>(1);
-  const loan = { amount: 2000, rate: 2.8, weeks: 8, fee: 35, total: 2219 };
-
+function ConfigView() {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50"
-      onClick={e => e.target === e.currentTarget && onClose()}>
-      <div className="glass w-full max-w-md rounded-xl p-6">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            {step > 1 && (
-              <button onClick={() => setStep(s => (s - 1) as 1 | 2 | 3)}>
-                <ArrowLeft size={18} className="text-[var(--color-text-muted)]" />
-              </button>
-            )}
-            <h2 className="font-heading font-bold text-xl">Solicitud de Crédito</h2>
-          </div>
-          <button onClick={onClose}>
-            <X size={20} className="text-[var(--color-text-muted)]" />
-          </button>
-        </div>
-
-        {/* Step indicator */}
-        <div className="flex items-center gap-2 mb-6">
-          {[1, 2, 3].map(s => (
-            <React.Fragment key={s}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
-                step >= s 
-                  ? 'bg-[var(--color-primary)] text-white' 
-                  : 'bg-[var(--color-surface-2)] text-[var(--color-text-dim)]'
-              }`}>
-                {step > s ? '✓' : s}
-              </div>
-              {s < 3 && (
-                <div className={`flex-1 h-0.5 rounded-full ${
-                  step > s ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-border)]'
-                }`} />
-              )}
-            </React.Fragment>
-          ))}
-        </div>
-
-        {step === 1 && (
-          <div className="space-y-6">
-            <div className="p-6 rounded-xl text-center bg-[var(--color-surface)]">
-              <p className="text-sm text-[var(--color-text-muted)] mb-2">Monto Pre-Aprobado</p>
-              <p className="font-heading font-bold text-4xl gradient-text mb-2">BOB 2,000</p>
-              <p className="text-sm text-[var(--color-success)]">Basado en tu historial QR</p>
-            </div>
-            <div className="grid grid-cols-3 gap-4">
-              {[
-                { icon: Percent, label: 'Tasa', value: `${loan.rate}% sem.` }, 
-                { icon: Calendar, label: 'Plazo', value: `${loan.weeks} sem.` }, 
-                { icon: Shield, label: 'Comisión', value: `BOB ${loan.fee}` }
-              ].map(({ icon: Icon, label, value }) => (
-                <div key={label} className="glass p-4 rounded-xl text-center">
-                  <Icon size={20} className="text-[var(--color-primary)] mx-auto mb-2" />
-                  <p className="text-xs text-[var(--color-text-muted)] mb-1">{label}</p>
-                  <p className="text-sm font-bold">{value}</p>
-                </div>
-              ))}
-            </div>
-            <button onClick={() => setStep(2)} className="btn-primary w-full py-3">
-              Continuar <ChevronRight size={16} />
-            </button>
-          </div>
-        )}
-
-        {step === 2 && (
-          <div className="space-y-6">
-            <h3 className="font-semibold text-lg">Resumen de Condiciones</h3>
-            <div className="space-y-3">
-              {[
-                ['Monto recibido', `BOB ${loan.amount.toLocaleString()}`], 
-                ['Tasa semanal', `${loan.rate}%`], 
-                ['Número de pagos', `${loan.weeks} cuotas`], 
-                ['Cuota semanal est.', `BOB ${Math.ceil(loan.total / loan.weeks)}`], 
-                ['Comisión única', `BOB ${loan.fee}`], 
-                ['Total a pagar', `BOB ${loan.total.toLocaleString()}`]
-              ].map(([k, v]) => (
-                <div key={k} className="flex justify-between text-sm p-3 rounded-lg bg-[var(--color-surface-2)]">
-                  <span className="text-[var(--color-text-muted)]">{k}</span>
-                  <span className="font-semibold">{v}</span>
-                </div>
-              ))}
-            </div>
-            <button onClick={() => setStep(3)} className="btn-primary w-full py-3">
-              Aceptar Términos <ChevronRight size={16} />
-            </button>
-          </div>
-        )}
-
-        {step === 3 && (
-          <div className="flex flex-col items-center text-center gap-6 py-4">
-            <div className="w-20 h-20 rounded-full flex items-center justify-center bg-[var(--color-success)] text-white">
-              <CheckCircle size={42} />
-            </div>
-            <div>
-              <h3 className="font-heading font-bold text-2xl mb-2">¡Crédito Aprobado!</h3>
-              <p className="text-[var(--color-text-muted)] leading-relaxed">
-                BOB <strong>2,000</strong> serán depositados en las próximas <strong>2 horas</strong>.
-              </p>
-            </div>
-            <div className="badge badge-success text-sm px-4 py-2">Transacción registrada on-chain</div>
-            <button onClick={onClose} className="btn-primary w-full py-3">Entendido, ¡Gracias!</button>
-          </div>
-        )}
+    <div className="bg-[#1a1625]/80 backdrop-blur-xl rounded-2xl p-8 border border-[#8B5CF6]/20">
+      <div className="text-center mb-8">
+        <h2 className="text-2xl font-bold text-white mb-2">Configuración</h2>
+        <p className="text-gray-400">Administra tu cuenta y preferencias</p>
+      </div>
+      <div className="text-center text-gray-500 py-8">
+        Próximamente...
       </div>
     </div>
   );
@@ -315,4 +251,5 @@ export default function MerchantDashboard() {
       {showLoan && <LoanModal onClose={() => setShowLoan(false)} />}
     </div>
   );
+}
 }

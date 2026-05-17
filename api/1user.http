@@ -1,0 +1,115 @@
+### ========================================
+### AyniPay API — Documentación
+### ========================================
+### Swagger UI: http://localhost:3000/api
+### Postman/REST Client: VS Code extension
+### ========================================
+
+### Variables globales
+@baseUrl = https://dot-revealable-telescopically.ngrok-free.dev/
+@token = <PEGAR_TOKEN_AQUI>
+
+
+
+### ========================================
+### AUTH — Público (sin token)
+### ========================================
+
+### 1. Registrar usuario (estudiante)
+POST {{baseUrl}}/user/register
+Content-Type: application/json
+
+{
+  "nombre": "María García",
+  "correo": "maria@example.com",
+  "password": "123456",
+  "telefono": "555-0101",
+  "tipo_usuario": "estudiante"
+}
+
+### 2. Registrar usuario (comercio)
+POST {{baseUrl}}/user/register
+Content-Type: application/json
+
+{
+  "nombre": "Tacos El Güero",
+  "correo": "tacos@example.com",
+  "password": "123456",
+  "tipo_usuario": "comercio"
+}
+
+
+### 4. Login — Recibes JWT (úsalo en @token)
+POST {{baseUrl}}/user/login
+Content-Type: application/json
+
+{
+  "correo": "maria@example.com",
+  "password": "123456"
+}
+
+### Ejemplo de respuesta login:
+### {
+###   "access_token": "eyJhbGci...",
+###   "usuario": {
+###     "id_usuario": "uuid",
+###     "nombre": "María García",
+###     "correo": "maria@example.com",
+###     "tipo_usuario": "estudiante",
+###     "estado": "activo"
+###   }
+### }
+### ========================================
+
+
+
+### ========================================
+### USER — Protegido (requiere @token)
+### ========================================
+
+### 5. Mi perfil (del token JWT)
+GET {{baseUrl}}/user/profile
+Authorization: Bearer {{token}}
+
+### 6. Listar todos los usuarios
+GET {{baseUrl}}/user
+Authorization: Bearer {{token}}
+
+### 7. Obtener usuario por ID
+GET {{baseUrl}}/user/<UUID_DEL_USUARIO>
+Authorization: Bearer {{token}}
+
+### 8. Actualizar usuario
+PUT {{baseUrl}}/user/<UUID_DEL_USUARIO>
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nombre": "María Actualizada",
+  "telefono": "555-0999"
+}
+
+### 9. Actualizar password
+PUT {{baseUrl}}/user/<UUID_DEL_USUARIO>
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "password": "nueva_contraseña"
+}
+
+### 10. Eliminar usuario (soft delete)
+DELETE {{baseUrl}}/user/<UUID_DEL_USUARIO>
+Authorization: Bearer {{token}}
+### ========================================
+
+
+
+### ========================================
+### NOTAS
+### ========================================
+### - Los campos 'estudiante', 'comercio', 'entidad' en tipo_usuario
+### - JWT expira en 7 días
+### - La contraseña se hashea con bcrypt
+### - Los campos nuevos (wallet_address, kyc_sbt_hash) se agregan al actualizar
+### - Swagger: http://localhost:3000/api para probar endpoints visualmente

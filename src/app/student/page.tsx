@@ -1,57 +1,136 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Wallet, PiggyBank, QrCode, Trophy, Target, TrendingUp, Coffee, Bus, BookOpen, Zap, ChevronRight, ArrowUpRight, Bell } from 'lucide-react';
-import { useAuth } from '@/context/AuthContext';
-import { useTokens } from '@/context/TokenContext';
+import { useState, useEffect } from "react";
+import { CreditCard, Settings } from "lucide-react";
+import {
+  StudentLayout,
+  PresupuestoView,
+  MetaAhorroView
+} from "@/components/student";
+import {
+  getAuth,
+  clearAuth,
+  getPresupuesto,
+  createPresupuesto,
+  updatePresupuesto,
+  Presupuesto
+} from "@/services/api";
 
-/* ── Donut Chart ── */
-function DonutChart({ cats }: { cats: { label: string; value: number; color: string }[] }) {
-  const total = cats.reduce((s, c) => s + c.value, 0);
-  const size = 140, cx = 70, cy = 70, r = 52, circ = 2 * Math.PI * r;
-  let cumul = 0;
-  const segs = cats.map(c => {
-    const pct = c.value / total;
-    const offset = circ * (1 - cumul);
-    const dash = circ * pct;
-    cumul += pct;
-    return { ...c, dash, offset };
-  });
+interface User {
+  id_usuario: string;
+  nombre: string;
+  correo: string;
+  tipo_usuario: string;
+  estado: string;
+}
+
+export default function StudentPanel() {
+  const [user, setUser] = useState<User | null>(null);
+  const [presupuesto, setPresupuesto] = useState<Presupuesto | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("presupuesto");
+
+  useEffect(() => {
+    const auth = getAuth();
+    if (auth) {
+      setUser(auth.user);
+      cargarPresupuesto();
+    }
+  }, []);
+
+  const cargarPresupuesto = async () => {
+    try {
+      const data = await getPresupuesto();
+      setPresupuesto(data);
+    } catch (error) {
+      console.error("Error cargando presupuesto:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleLogout = () => {
+    clearAuth();
+    window.location.href = "/login";
+  };
+
+  const handleSavePresupuesto = async (data: { presupuesto_semanal: number; presupuesto_mensual: number }) => {
+    await updatePresupuesto(data);
+    await cargarPresupuesto();
+  };
+
+  const handleCreatePresupuesto = async (data: { universidad: string; carrera: string; presupuesto_semanal: number; presupuesto_mensual: number }) => {
+    await createPresupuesto(data);
+    await cargarPresupuesto();
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#0f0a1a]">
+        <div className="w-8 h-8 border-4 border-[#7c3aed] border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#0f0a1a]">
+        <div className="text-[#a78bfa]">Cargando...</div>
+      </div>
+    );
+  }
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case "presupuesto":
+        return (
+          <PresupuestoView
+            presupuesto={presupuesto}
+            onSave={handleSavePresupuesto}
+            onCreate={handleCreatePresupuesto}
+          />
+        );
+      case "metaAhorro":
+        return <MetaAhorroView />;
+      case "billetera":
+        return <BilleteraView />;
+      case "config":
+        return <ConfigView />;
+      default:
+        return null;
+    }
+  };
+
   return (
-    <div className="relative shrink-0" style={{ width: size, height: size }}>
-      <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
-        {segs.map((s, i) => (
-          <circle key={i} cx={cx} cy={cy} r={r} fill="none" stroke={s.color} strokeWidth={16}
-            strokeDasharray={`${s.dash} ${circ - s.dash}`} strokeDashoffset={s.offset} strokeLinecap="round" />
-        ))}
-      </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <p className="font-heading font-bold text-lg leading-none">100%</p>
-        <p className="text-[10px] text-[var(--color-text-dim)]">Gasto</p>
+    <StudentLayout
+      userName={user.nombre}
+      activeTab={activeTab}
+      onTabChange={setActiveTab}
+      onLogout={handleLogout}
+    >
+      {renderContent()}
+    </StudentLayout>
+  );
+}
+
+function BilleteraView() {
+  return (
+    <div className="bg-[#1a1625]/80 backdrop-blur-xl rounded-2xl p-8 border border-[#8B5CF6]/20">
+      <div className="text-center mb-8">
+        <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-[#8B5CF6]/20 flex items-center justify-center">
+          <CreditCard className="text-[#a78bfa]" size={40} />
+        </div>
+        <h2 className="text-2xl font-bold text-white mb-2">Mi Billetera</h2>
+        <p className="text-gray-400">Gestiona tus métodos de pago y tarjetas</p>
+      </div>
+      <div className="text-center text-gray-500 py-8">
+        Próximamente...
       </div>
     </div>
   );
 }
 
-/* ── QR Scanner ── */
-function QRScanner({ onBack }: { onBack: () => void }) {
-  const [state, setState] = useState<'scanning' | 'confirm' | 'success'>('scanning');
-  const merchants = [
-    { name: 'Comedor Central UMSA', amount: 13, rounded: 15 },
-    { name: 'Fotocopias Don Carlos', amount: 7, rounded: 10 },
-    { name: 'Minibús Línea 131', amount: 2.50, rounded: 3 },
-  ];
-  const [merchant] = useState(merchants[Math.floor(Math.random() * merchants.length)]);
-  const { addTokens } = useTokens();
-  const savings = parseFloat((merchant.rounded - merchant.amount).toFixed(2));
-
-  React.useEffect(() => {
-    if (state !== 'scanning') return;
-    const t = setTimeout(() => setState('confirm'), 2800);
-    return () => clearTimeout(t);
-  }, [state]);
-
+function ConfigView() {
   return (
     <div className="min-h-screen relative z-10 pt-16 flex flex-col" style={{ paddingTop: 'calc(70px + 1rem)' }}>
       <div className="flex items-center gap-3 px-4 py-4">
@@ -59,58 +138,16 @@ function QRScanner({ onBack }: { onBack: () => void }) {
         <h2 className="font-heading font-semibold text-lg">
           {state === 'scanning' ? 'Escaneando QR' : state === 'confirm' ? 'Confirmar Pago' : '¡Pago Exitoso!'}
         </h2>
+    <div className="bg-[#1a1625]/80 backdrop-blur-xl rounded-2xl p-8 border border-[#8B5CF6]/20">
+      <div className="text-center mb-8">
+        <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-[#8B5CF6]/20 flex items-center justify-center">
+          <Settings className="text-[#a78bfa]" size={40} />
+        </div>
+        <h2 className="text-2xl font-bold text-white mb-2">Configuración</h2>
+        <p className="text-gray-400">Administra tu cuenta y preferencias</p>
       </div>
-      <div className="flex-1 flex flex-col items-center justify-center px-4 gap-8">
-        {state === 'scanning' && (
-          <div className="flex flex-col items-center gap-6 anim-fade-up">
-            <div className="relative w-56 h-56">
-              <div className="absolute inset-0 rounded-2xl" style={{ background: 'rgba(124,58,237,0.08)', border: '1px solid rgba(124,58,237,0.2)' }} />
-              <div className="qr-corner tl" /><div className="qr-corner tr" /><div className="qr-corner bl" /><div className="qr-corner br" />
-              <div className="qr-scan-line" />
-            </div>
-            <p className="text-[var(--color-text-muted)] text-sm animate-pulse">Apunta la cámara al código QR del comerciante...</p>
-          </div>
-        )}
-        {state === 'confirm' && (
-          <div className="glass-strong w-full max-w-sm p-6 rounded-2xl anim-scale-in flex flex-col gap-5">
-            <div className="text-center">
-              <p className="text-xs text-[var(--color-text-muted)] mb-1">Pago a</p>
-              <h3 className="font-heading font-bold text-xl">{merchant.name}</h3>
-            </div>
-            <div className="space-y-3">
-              {[
-                { label: 'Costo real', value: `BOB ${merchant.amount.toFixed(2)}`, bg: 'rgba(255,255,255,0.04)', color: 'inherit' },
-                { label: 'Monto cobrado (redondeo)', value: `BOB ${merchant.rounded.toFixed(2)}`, bg: 'rgba(124,58,237,0.1)', color: 'var(--color-primary-l)' },
-                { label: '→ A tu alcancía', value: `+ BOB ${savings.toFixed(2)}`, bg: 'rgba(245,158,11,0.1)', color: 'var(--color-gold)' },
-              ].map(row => (
-                <div key={row.label} className="flex justify-between items-center p-3 rounded-xl" style={{ background: row.bg }}>
-                  <span className="text-sm" style={{ color: row.color !== 'inherit' ? row.color : 'var(--color-text-muted)' }}>{row.label}</span>
-                  <span className="font-bold" style={{ color: row.color !== 'inherit' ? row.color : 'inherit' }}>{row.value}</span>
-                </div>
-              ))}
-            </div>
-            <div className="flex gap-3">
-              <button onClick={() => setState('scanning')} className="btn-ghost flex-1 py-3">Cancelar</button>
-              <button onClick={() => { setState('success'); addTokens(10); }} className="btn-primary flex-1 py-3">Confirmar</button>
-            </div>
-          </div>
-        )}
-        {state === 'success' && (
-          <div className="flex flex-col items-center gap-5 anim-scale-in text-center">
-            <div className="w-20 h-20 rounded-full flex items-center justify-center anim-pulse-glow"
-              style={{ background: 'rgba(16,185,129,0.2)', border: '2px solid #10b981' }}>
-              <span className="text-4xl">✓</span>
-            </div>
-            <div>
-              <h3 className="font-heading font-bold text-2xl mb-2">¡Pago Exitoso!</h3>
-              <p className="text-[var(--color-text-muted)] text-sm">
-                <span className="text-[var(--color-gold)] font-semibold">+ BOB {savings.toFixed(2)}</span> enviados a tu alcancía
-              </p>
-              <p className="text-sm text-[var(--color-primary)] mt-1">+ 10 puntos ERC-20 ganados</p>
-            </div>
-            <button onClick={onBack} className="btn-primary">Volver al Dashboard</button>
-          </div>
-        )}
+      <div className="text-center text-gray-500 py-8">
+        Próximamente...
       </div>
     </div>
   );
@@ -322,4 +359,5 @@ export default function StudentDashboard() {
       </nav>
     </div>
   );
+}
 }

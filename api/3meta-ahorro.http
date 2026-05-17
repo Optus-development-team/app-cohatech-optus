@@ -1,0 +1,107 @@
+### ========================================
+### AyniPay — Estudiante Metas de Ahorro API
+### ========================================
+
+### Variables
+@baseUrl = https://dot-revealable-telescopically.ngrok-free.dev/
+@token = <PEGAR_TOKEN_JWT_AQUI>
+
+
+
+### ========================================
+### METAS DE AHORRO — CRUD
+### ========================================
+
+### 1. Crear nueva meta de ahorro
+POST {{baseUrl}}/estudiante/meta-ahorro
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nombre_meta": "Pasajes",
+  "monto_objetivo": 300,
+  "fecha_limite": "2026-07-30"
+}
+
+### Respuesta:
+### {
+###   "id_meta": "uuid...",
+###   "id_estudiante": "uuid...",
+###   "nombre_meta": "Pasajes",
+###   "monto_objetivo": 300,
+###   "monto_actual": 0,
+###   "fecha_inicio": "2026-05-16T...",
+###   "fecha_limite": "2026-07-30T...",
+###   "estado_meta": "activa",
+###   "porcentaje_avance": 0
+### }
+
+
+### 2. Listar todas mis metas
+GET {{baseUrl}}/estudiante/meta-ahorro
+Authorization: Bearer {{token}}
+
+
+### 3. Ver una meta específica
+GET {{baseUrl}}/estudiante/meta-ahorro/<ID_META>
+Authorization: Bearer {{token}}
+
+
+### 4. Actualizar meta (nombre, monto, estado)
+PUT {{baseUrl}}/estudiante/meta-ahorro/<ID_META>
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "nombre_meta": "Pasajes Updated",
+  "monto_objetivo": 500,
+  "estado_meta": "activa"
+}
+
+
+### 5. Pausar una meta
+PUT {{baseUrl}}/estudiante/meta-ahorro/<ID_META>
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "estado_meta": "pausada"
+}
+
+
+### 6. Eliminar una meta
+DELETE {{baseUrl}}/estudiante/meta-ahorro/<ID_META>
+Authorization: Bearer {{token}}
+
+
+### 7. Aportar a una meta (agregar dinero)
+PUT {{baseUrl}}/estudiante/meta-ahorro/<ID_META>/aportar
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "monto": 50
+}
+
+### Respuesta:
+### {
+###   "id_meta": "uuid...",
+###   "nombre_meta": "Pasajes",
+###   "monto_objetivo": 300,
+###   "monto_actual": 50,
+###   "porcentaje_avance": 16.67
+### }
+
+### ========================================
+
+
+
+### ========================================
+### NOTAS
+### ====================================
+### - Nombres válidos: "Pasajes", "Comida", "Emergency", "Fotocopias", "Libros", "Salida", "Otro"
+### - Monto objetivo: 10 - 50,000 Bs
+### - Estados: "activa", "pausada"
+### - porcentaje_avance se calcula automáticamente (monto_actual / monto_objetivo * 100)
+### - La meta se crea con monto_actual = 0
+### - Endpoint 7 requiere implementación en backend
