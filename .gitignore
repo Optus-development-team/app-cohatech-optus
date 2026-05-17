@@ -3,6 +3,7 @@ node_modules
 out
 dist
 coverage
+AGENTS.md
 pnpm-lock.yaml
 .env
 .env.local
