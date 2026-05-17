@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 const API_BASE_URL = "https://dot-revealable-telescopically.ngrok-free.dev";
 
 export async function POST(request: NextRequest) {
-  const path = request.nextUrl.pathname.replace("/api/auth/", "");
+  const path = request.nextUrl.pathname.replace("/api/auth/", "").replace(/^\//, "");
   const token = request.headers.get("authorization");
   
   try {
@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(data);
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { message: "Error de conexión" },
       { status: 500 }
@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
-  const path = request.nextUrl.pathname.replace("/api/auth/", "");
+  const path = request.nextUrl.pathname.replace("/api/auth/", "").replace(/^\//, "");
   const token = request.headers.get("authorization");
 
   try {
@@ -53,7 +53,7 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json(data);
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { message: "Error de conexión" },
       { status: 500 }
@@ -62,7 +62,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function PUT(request: NextRequest) {
-  const path = request.nextUrl.pathname.replace("/api/auth/", "");
+  const path = request.nextUrl.pathname.replace("/api/auth/", "").replace(/^\//, "");
   const token = request.headers.get("authorization");
   
   try {
@@ -84,7 +84,35 @@ export async function PUT(request: NextRequest) {
     }
 
     return NextResponse.json(data);
-  } catch (error) {
+  } catch {
+    return NextResponse.json(
+      { message: "Error de conexión" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  const path = request.nextUrl.pathname.replace("/api/auth/", "").replace(/^\//, "");
+  const token = request.headers.get("authorization");
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/${path}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: token } : {}),
+      },
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return NextResponse.json(data, { status: response.status });
+    }
+
+    return NextResponse.json(data);
+  } catch {
     return NextResponse.json(
       { message: "Error de conexión" },
       { status: 500 }

@@ -3,7 +3,7 @@
 ### ========================================
 
 ### Variables
-@baseUrl = http://localhost:3000
+@baseUrl = https://dot-revealable-telescopically.ngrok-free.dev/
 @token = <PEGAR_TOKEN_JWT_AQUI>
 
 
@@ -72,15 +72,36 @@ Content-Type: application/json
 ### 6. Eliminar una meta
 DELETE {{baseUrl}}/estudiante/meta-ahorro/<ID_META>
 Authorization: Bearer {{token}}
+
+
+### 7. Aportar a una meta (agregar dinero)
+PUT {{baseUrl}}/estudiante/meta-ahorro/<ID_META>/aportar
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "monto": 50
+}
+
+### Respuesta:
+### {
+###   "id_meta": "uuid...",
+###   "nombre_meta": "Pasajes",
+###   "monto_objetivo": 300,
+###   "monto_actual": 50,
+###   "porcentaje_avance": 16.67
+### }
+
 ### ========================================
 
 
 
 ### ========================================
 ### NOTAS
-### ========================================
+### ====================================
 ### - Nombres válidos: "Pasajes", "Comida", "Emergency", "Fotocopias", "Libros", "Salida", "Otro"
 ### - Monto objetivo: 10 - 50,000 Bs
 ### - Estados: "activa", "pausada"
 ### - porcentaje_avance se calcula automáticamente (monto_actual / monto_objetivo * 100)
 ### - La meta se crea con monto_actual = 0
+### - Endpoint 7 requiere implementación en backend

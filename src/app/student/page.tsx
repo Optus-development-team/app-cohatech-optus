@@ -2,17 +2,18 @@
 
 import { useState, useEffect } from "react";
 import { CreditCard, Settings } from "lucide-react";
-import { 
+import {
   StudentLayout,
-  PresupuestoView
+  PresupuestoView,
+  MetaAhorroView
 } from "@/components/student";
-import { 
-  getAuth, 
-  clearAuth, 
-  getPresupuesto, 
-  createPresupuesto, 
-  updatePresupuesto, 
-  Presupuesto 
+import {
+  getAuth,
+  clearAuth,
+  getPresupuesto,
+  createPresupuesto,
+  updatePresupuesto,
+  Presupuesto
 } from "@/services/api";
 
 interface User {
@@ -89,6 +90,8 @@ export default function StudentPanel() {
             onCreate={handleCreatePresupuesto}
           />
         );
+      case "metaAhorro":
+        return <MetaAhorroView />;
       case "billetera":
         return <BilleteraView />;
       case "config":

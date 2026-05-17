@@ -3,3 +3,7 @@ export { default as StudentSidebar } from "./StudentSidebar";
 export { default as StudentHeader } from "./StudentHeader";
 export { default as StatCard } from "./StatCard";
 export { default as PresupuestoView } from "./PresupuestoView";
+export { default as MetaAhorroView } from "./MetaAhorroView";
+export { default as MetaAhorroForm } from "./MetaAhorroForm";
+export { default as MetaAhorroCard } from "./MetaAhorroCard";
+export { default as MetaAhorroEmpty } from "./MetaAhorroEmpty";

@@ -2,27 +2,23 @@
 
 import Link from "next/link";
 import {
-  Wallet,
-  Target,
-  CreditCard,
+  Store,
   Settings,
   LogOut
 } from "lucide-react";
 
-interface StudentSidebarProps {
+interface MerchantSidebarProps {
   activeTab: string;
   onTabChange: (tab: string) => void;
   onLogout: () => void;
 }
 
 const navItems = [
-  { id: "presupuesto", label: "Presupuesto", icon: Wallet },
-  { id: "metaAhorro", label: "Meta Ahorro", icon: Target },
-  { id: "billetera", label: "Billetera", icon: CreditCard },
+  { id: "perfil", label: "Mi Comercio", icon: Store },
   { id: "config", label: "Configuración", icon: Settings },
 ];
 
-export default function StudentSidebar({ activeTab, onTabChange, onLogout }: StudentSidebarProps) {
+export default function MerchantSidebar({ activeTab, onTabChange, onLogout }: MerchantSidebarProps) {
   return (
     <aside className="w-64 bg-[#1a1625]/95 backdrop-blur-xl border-r border-[#8B5CF6]/20 fixed h-full">
       <div className="p-6">

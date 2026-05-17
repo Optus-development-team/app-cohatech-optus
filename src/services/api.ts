@@ -45,6 +45,18 @@ export interface Presupuesto {
   puntos_actuales: number;
 }
 
+export interface MetaAhorro {
+  id_meta: string;
+  id_estudiante: string;
+  nombre_meta: string;
+  monto_objetivo: number;
+  monto_actual: number;
+  fecha_inicio: string;
+  fecha_limite: string;
+  estado_meta: "activa" | "pausada" | "completada";
+  porcentaje_avance: number;
+}
+
 export async function login(data: LoginData): Promise<LoginResponse> {
   const res = await fetch(`${API_BASE_URL}/user/login`, {
     method: "POST",
@@ -55,7 +67,7 @@ export async function login(data: LoginData): Promise<LoginResponse> {
   const result: LoginResponse = await res.json();
 
   if (!res.ok) {
-    throw new Error(result.access_token || "Error en el login");
+    throw new Error("Credenciales incorrectas");
   }
 
   return result;
@@ -162,4 +174,173 @@ export function getAuth(): { token: string; user: LoginResponse["usuario"] } | n
   } catch {
     return null;
   }
+}
+
+export async function getMetasAhorro(): Promise<MetaAhorro[]> {
+  const res = await fetch(`${API_BASE_URL}/estudiante/meta-ahorro`, {
+    headers: { ...getAuthHeader() },
+  });
+
+  if (!res.ok) return [];
+
+  return res.json();
+}
+
+export async function getMetaAhorro(id: string): Promise<MetaAhorro | null> {
+  const res = await fetch(`${API_BASE_URL}/estudiante/meta-ahorro/${id}`, {
+    headers: { ...getAuthHeader() },
+  });
+
+  if (!res.ok) return null;
+
+  return res.json();
+}
+
+export async function createMetaAhorro(data: {
+  nombre_meta: string;
+  monto_objetivo: number;
+  fecha_limite: string;
+}): Promise<MetaAhorro> {
+  const res = await fetch(`${API_BASE_URL}/estudiante/meta-ahorro`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...getAuthHeader(),
+    },
+    body: JSON.stringify(data),
+  });
+
+  const result = await res.json();
+
+  if (!res.ok) {
+    throw new Error(result.message || "Error al crear meta de ahorro");
+  }
+
+  return result;
+}
+
+export async function updateMetaAhorro(
+  id: string,
+  data: {
+    nombre_meta?: string;
+    monto_objetivo?: number;
+    estado_meta?: "activa" | "pausada";
+  }
+): Promise<MetaAhorro> {
+  const res = await fetch(`${API_BASE_URL}/estudiante/meta-ahorro/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      ...getAuthHeader(),
+    },
+    body: JSON.stringify(data),
+  });
+
+  const result = await res.json();
+
+  if (!res.ok) {
+    throw new Error(result.message || "Error al actualizar meta de ahorro");
+  }
+
+  return result;
+}
+
+export async function deleteMetaAhorro(id: string): Promise<void> {
+  const res = await fetch(`${API_BASE_URL}/estudiante/meta-ahorro/${id}`, {
+    method: "DELETE",
+    headers: { ...getAuthHeader() },
+  });
+
+  if (!res.ok) {
+    const result = await res.json();
+    throw new Error(result.message || "Error al eliminar meta de ahorro");
+  }
+}
+
+export interface Comercio {
+  id_comercio: string;
+  id_usuario: string;
+  nombre_comercio: string;
+  rubro: string;
+  ubicacion: string;
+  zona: string;
+  universidad_cercana: string;
+  tipo_comercio: string;
+  horario_apertura: string;
+  horario_cierre: string;
+  fecha_registro: string;
+  score_actual: number | null;
+  nivel_riesgo_actual: string | null;
+  estado: string;
+}
+
+export async function getComercio(): Promise<Comercio | null> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/comercio/profile`, {
+      headers: { ...getAuthHeader() },
+    });
+
+    if (res.status === 404) return null;
+    if (!res.ok) return null;
+
+    return res.json();
+  } catch {
+    return null;
+  }
+}
+
+export async function createComercio(data: {
+  nombre_comercio: string;
+  rubro: string;
+  ubicacion: string;
+  zona: string;
+  universidad_cercana: string;
+  tipo_comercio: string;
+  horario_apertura: string;
+  horario_cierre: string;
+}): Promise<Comercio> {
+  const res = await fetch(`${API_BASE_URL}/comercio`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...getAuthHeader(),
+    },
+    body: JSON.stringify(data),
+  });
+
+  const result = await res.json();
+
+  if (!res.ok) {
+    throw new Error(result.message || "Error al crear comercio");
+  }
+
+  return result;
+}
+
+export async function updateComercio(data: Partial<{
+  nombre_comercio: string;
+  rubro: string;
+  ubicacion: string;
+  zona: string;
+  universidad_cercana: string;
+  tipo_comercio: string;
+  horario_apertura: string;
+  horario_cierre: string;
+}>): Promise<Comercio> {
+  const res = await fetch(`${API_BASE_URL}/comercio/profile`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      ...getAuthHeader(),
+    },
+    body: JSON.stringify(data),
+  });
+
+  const result = await res.json();
+
+  if (!res.ok) {
+    throw new Error(result.message || "Error al actualizar comercio");
+  }
+
+  return result;
 }

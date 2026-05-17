@@ -3,8 +3,8 @@
 ### ========================================
 
 ### Variables
-@baseUrl = http://localhost:3000
-@token = <PEGAR_TOKEN_JWT_AQUI>
+@baseUrl = https://dot-revealable-telescopically.ngrok-free.dev/
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMjU4ZTI2NC1iOWY5LTQ3ODEtYmE5OC1lODcyZDYzNjAyNTQiLCJjb3JyZW8iOiJjb21lcmNpYW50ZUBnbWFpbC5jb20iLCJ0aXBvX3VzdWFyaW8iOiJjb21lcmNpbyIsImlhdCI6MTc3ODk4NDEwMiwiZXhwIjoxNzc5NTg4OTAyfQ.5fJGu5cYgCH-bAIgKnpcGby_FPjqSRi3Kz8SGqTPcc8
 
 
 
@@ -28,32 +28,13 @@ Content-Type: application/json
   "horario_cierre": "22:00"
 }
 
-### Respuesta:
-### {
-###   "id_comercio": "uuid...",
-###   "id_usuario": "uuid...",
-###   "nombre_comercio": "Tacos El Güero",
-###   "rubro": "comida",
-###   "ubicacion": "Av. América entre 6 y 7",
-###   "zona": "Central",
-###   "universidad_cercana": "UMSS",
-###   "tipo_comercio": "informal",
-###   "horario_apertura": "08:00",
-###   "horario_cierre": "22:00",
-###   "fecha_registro": "2026-05-16T...",
-###   "score_actual": null,
-###   "nivel_riesgo_actual": null,
-###   "estado": "activo"
-### }
-
-
 ### 2. Ver mi perfil de comercio
-GET {{baseUrl}}/comercio/my
+GET {{baseUrl}}/comercio/profile
 Authorization: Bearer {{token}}
 
 
-### 3. Ver todos los comercios (admin)
-GET {{baseUrl}}/comercio
+### 3. Ver todos los comercios (solo entidades financieras/admin)
+GET {{baseUrl}}/comercio/admin/all
 Authorization: Bearer {{token}}
 
 
@@ -63,7 +44,7 @@ Authorization: Bearer {{token}}
 
 
 ### 5. Actualizar perfil de comercio
-PUT {{baseUrl}}/comercio
+PUT {{baseUrl}}/comercio/profile
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -75,7 +56,7 @@ Content-Type: application/json
 
 
 ### 6. Eliminar mi perfil de comercio
-DELETE {{baseUrl}}/comercio
+DELETE {{baseUrl}}/comercio/profile
 Authorization: Bearer {{token}}
 ### ========================================
 
@@ -85,7 +66,8 @@ Authorization: Bearer {{token}}
 ### NOTAS
 ### ========================================
 ### - POST crea el perfil (solo ejecutar una vez)
-### - Rubros válidos: "comida", "fotocopias", "transporte", "snacks", "librería"
+### - Rubro: cualquier texto válido (ej: "comida", "librería", "cafetería", etc.)
 ### - Tipo comercio: "informal", "microempresa"
 ### - Score actual y nivel_riesgo se calculan con transacciones
 ### - Solo el usuario owner puede ver/actualizar su perfil
+### - GET /comercio/admin/all solo accesible para usuarios tipo "entidad"
