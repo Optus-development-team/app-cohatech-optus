@@ -109,7 +109,7 @@ const getGradientDirection = (position: string): string => {
   return directions[position] || 'to bottom';
 };
 
-const debounce = <T extends (...a: any[]) => void>(fn: T, wait: number) => {
+const debounce = <T extends (...a: unknown[]) => void>(fn: T, wait: number) => {
   let t: ReturnType<typeof setTimeout>;
   return (...a: Parameters<T>) => {
     clearTimeout(t);
@@ -122,19 +122,20 @@ const useResponsiveDimension = (
   config: Partial<GradualBlurProps>,
   key: keyof GradualBlurProps
 ) => {
-  const [val, setVal] = useState<any>(config[key]);
+  const [val, setVal] = useState<string | number | undefined>(config[key] as string | number | undefined);
 
   useEffect(() => {
     if (!responsive) return;
 
     const calc = () => {
       const w = window.innerWidth;
-      let v: any = config[key];
+      let v: string | number | undefined = config[key] as string | number | undefined;
       const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
       const k = cap(key as string);
-      if (w <= 480 && (config as any)['mobile' + k]) v = (config as any)['mobile' + k];
-      else if (w <= 768 && (config as any)['tablet' + k]) v = (config as any)['tablet' + k];
-      else if (w <= 1024 && (config as any)['desktop' + k]) v = (config as any)['desktop' + k];
+      const configRecord = config as Record<string, string | number | undefined>;
+      if (w <= 480 && configRecord['mobile' + k]) v = configRecord['mobile' + k];
+      else if (w <= 768 && configRecord['tablet' + k]) v = configRecord['tablet' + k];
+      else if (w <= 1024 && configRecord['desktop' + k]) v = configRecord['desktop' + k];
       setVal(v);
     };
 
