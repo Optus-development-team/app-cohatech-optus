@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import {
   MerchantLayout,
+  MerchantStatsView,
   MerchantProfileView
 } from "@/components/merchant";
 import {
@@ -21,7 +22,7 @@ interface User {
 export default function MerchantPanel() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("perfil");
+  const [activeTab, setActiveTab] = useState("estadisticas");
 
   useEffect(() => {
     const auth = getAuth();
@@ -53,6 +54,8 @@ export default function MerchantPanel() {
 
   const renderContent = () => {
     switch (activeTab) {
+      case "estadisticas":
+        return <MerchantStatsView />;
       case "perfil":
         return <MerchantProfileView />;
       case "config":

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import {
+  BarChart3,
   Store,
   Settings,
   LogOut
@@ -17,6 +18,7 @@ interface MerchantSidebarProps {
 const navItems = [
   { id: "perfil", label: "Mi Comercio", icon: Store },
   { id: "config", label: "Configuración", icon: Settings },
+  { id: "estadisticas", label: "Estadística del emprendimiento", icon: BarChart3 },
 ];
 
 export default function MerchantSidebar({ activeTab, onTabChange, onLogout }: MerchantSidebarProps) {
@@ -32,7 +34,7 @@ export default function MerchantSidebar({ activeTab, onTabChange, onLogout }: Me
             className={`${styles.navItem} ${activeTab === item.id ? styles.navItemActive : ""}`}
           >
             <item.icon size={20} />
-            <span className="font-medium">{item.label}</span>
+            <span className={styles.navLabel}>{item.label}</span>
           </button>
         ))}
       </nav>

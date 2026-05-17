@@ -464,7 +464,18 @@
   min-height: 48px;
   background: rgba(139, 92, 246, 0.2);
   color: var(--color-primary-l);
+  width: 100px;
+  height: 3rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 1.125rem;
+  flex-shrink: 0;
 }
+
 
 .buttonSecondary:hover {
   background: rgba(139, 92, 246, 0.3);

@@ -2,11 +2,13 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { ChevronDown, LogOut, User } from 'lucide-react';
 import { clearAuth, getAuth, LoginResponse } from '@/services/api';
 import styles from './Navbar.module.css';
 
 export default function Navbar() {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<LoginResponse['usuario'] | null>(null);
@@ -43,6 +45,13 @@ export default function Navbar() {
     setIsUserMenuOpen(false);
     setIsOpen(false);
     window.location.href = "/login";
+  };
+
+  const handleDashboard = () => {
+    const dashboardPath = user?.tipo_usuario === "comercio" ? "/merchant" : "/student";
+    setIsUserMenuOpen(false);
+    setIsOpen(false);
+    router.push(dashboardPath);
   };
 
   const userActionLabel = user?.tipo_usuario === "comercio" ? "Desvincularse" : "Salir";
@@ -90,6 +99,15 @@ export default function Navbar() {
                 >
                   <LogOut size={16} />
                   <span>{userActionLabel}</span>
+                </button>
+                
+                <button
+                  type="button"
+                  className={styles.userMenuItem}
+                  onClick={handleDashboard}
+                >
+                  <User size={16} />
+                  <span>Dashboard</span>
                 </button>
               </div>
             </li>
