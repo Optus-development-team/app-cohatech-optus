@@ -37,15 +37,6 @@ export default function MerchantSidebar({ activeTab, onTabChange, onLogout }: Me
         ))}
       </nav>
 
-      <div className="p-4">
-        <button
-          onClick={onLogout}
-          className={styles.logoutBtn + " w-full flex items-center gap-3 transition-all"}
-        >
-          <LogOut size={20} />
-          <span className="font-medium">Cerrar Sesión</span>
-        </button>
-      </div>
     </aside>
   );
 }
