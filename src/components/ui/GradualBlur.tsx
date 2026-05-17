@@ -121,7 +121,7 @@ const useResponsiveDimension = (
   responsive: boolean | undefined,
   config: Partial<GradualBlurProps>,
   key: keyof GradualBlurProps
-) => {
+): string | number | undefined => {
   const [val, setVal] = useState<string | number | undefined>(config[key] as string | number | undefined);
 
   useEffect(() => {
@@ -145,7 +145,7 @@ const useResponsiveDimension = (
     return () => window.removeEventListener('resize', debouncedCalc);
   }, [responsive, config, key]);
 
-  return responsive ? val : config[key];
+  return responsive ? val : (config[key] as string | number | undefined);
 };
 
 const useIntersectionObserver = (ref: React.RefObject<HTMLDivElement>, shouldObserve: boolean = false) => {
@@ -326,10 +326,10 @@ const GradualBlur: React.FC<GradualBlurProps> = props => {
   );
 };
 
-const GradualBlurMemo = React.memo(GradualBlur);
+const GradualBlurMemo = React.memo(GradualBlur) as unknown as React.FC<GradualBlurProps> & { PRESETS: typeof PRESETS; CURVE_FUNCTIONS: typeof CURVE_FUNCTIONS };
 GradualBlurMemo.displayName = 'GradualBlur';
-(GradualBlurMemo as React.FC<GradualBlurProps> & { PRESETS: typeof PRESETS; CURVE_FUNCTIONS: typeof CURVE_FUNCTIONS }).PRESETS = PRESETS;
-(GradualBlurMemo as React.FC<GradualBlurProps> & { PRESETS: typeof PRESETS; CURVE_FUNCTIONS: typeof CURVE_FUNCTIONS }).CURVE_FUNCTIONS = CURVE_FUNCTIONS;
+GradualBlurMemo.PRESETS = PRESETS;
+GradualBlurMemo.CURVE_FUNCTIONS = CURVE_FUNCTIONS;
 
 export default GradualBlurMemo;
 
