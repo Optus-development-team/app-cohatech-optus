@@ -1,4 +1,5 @@
 import { LucideIcon } from "lucide-react";
+import styles from "./Student.module.css";
 
 interface StatCardProps {
   label: string;
@@ -8,13 +9,22 @@ interface StatCardProps {
 }
 
 export default function StatCard({ label, value, icon: Icon, gradient }: StatCardProps) {
+  const badgeClass =
+    gradient.includes("amber") || gradient.includes("orange")
+      ? styles.gradientBadgeAmber
+      : gradient.includes("cyan") || gradient.includes("blue")
+        ? styles.gradientBadgeCyan
+        : gradient.includes("green")
+          ? styles.gradientBadgeGreen
+          : styles.gradientBadgePrimary;
+
   return (
-    <div className="relative bg-[#1a1625]/80 backdrop-blur-xl rounded-2xl p-6 border border-[#8B5CF6]/20 hover:border-[#8B5CF6]/40 transition-all hover:shadow-[0_0_30px_rgba(124,58,237,0.2)]">
-      <div className={`w-12 h-12 rounded-xl bg-gradient-to-r ${gradient} flex items-center justify-center mb-4`}>
+    <div className={styles.panelCard + " relative transition-all"}>
+      <div className={`${badgeClass} mb-4`}>
         <Icon className="text-white" size={24} />
       </div>
-      <div className="text-3xl font-bold text-white mb-1">{value}</div>
-      <div className="text-gray-400 text-sm">{label}</div>
+      <div className={styles.valueLarge + " mb-1"}>{value}</div>
+      <div className={styles.mutedText + " text-sm"}>{label}</div>
     </div>
   );
 }

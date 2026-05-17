@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import styles from "./Merchant.module.css";
 import { Store, MapPin, Clock, AlertCircle } from "lucide-react";
 import { Comercio, getComercio, createComercio, updateComercio } from "@/services/api";
 
@@ -117,50 +118,51 @@ export default function MerchantProfileView({ onUpdate }: MerchantProfileViewPro
   return (
     <div className="space-y-6">
       {error && (
-        <div className="flex items-center gap-2 p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400">
+        <div className={styles.statusAlert + " " + styles.statusError}>
           <AlertCircle size={18} />
           {error}
         </div>
       )}
 
       {success && (
-        <div className="flex items-center gap-2 p-4 bg-green-500/10 border border-green-500/30 rounded-xl text-green-400">
+        <div className={styles.statusAlert + " " + styles.statusSuccess}>
           <AlertCircle size={18} />
           {success}
         </div>
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-[#1a1625]/80 backdrop-blur-xl rounded-2xl p-6 border border-[#8B5CF6]/20">
+        <div className="lg:col-span-2">
+          <div className={styles.panelCard}>
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-white">Mi Comercio</h2>
+            <h2 className={styles.titleMedium}>Mi Comercio</h2>
             <button
               onClick={() => setEditando(!editando)}
-              className="flex items-center gap-2 px-4 py-2 bg-[#8B5CF6]/20 text-[#a78bfa] rounded-lg hover:bg-[#8B5CF6]/30 transition-all"
+              className={styles.buttonSecondary + " flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition-all"}
             >
               {editando ? "Cancelar" : "Editar"}
             </button>
           </div>
 
           {editando ? (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm text-[#a78bfa] mb-2">Nombre del Comercio</label>
+            <form onSubmit={handleSubmit} className="ui-form-stack">
+              <div className="ui-grid-2">
+                <div className="ui-field">
+                  <label className="ui-label">Nombre del Comercio</label>
                   <input
                     type="text"
                     value={formData.nombre_comercio}
                     onChange={(e) => setFormData({ ...formData, nombre_comercio: e.target.value })}
-                    className="w-full px-4 py-3 bg-[#0f0a1a] border border-[#8B5CF6]/30 rounded-xl text-white"
+                    className="ui-input"
                     required
                   />
                 </div>
-                <div>
-                  <label className="block text-sm text-[#a78bfa] mb-2">Rubro</label>
+                <div className="ui-field">
+                  <label className="ui-label">Rubro</label>
                   <select
                     value={formData.rubro}
                     onChange={(e) => setFormData({ ...formData, rubro: e.target.value })}
-                    className="w-full px-4 py-3 bg-[#0f0a1a] border border-[#8B5CF6]/30 rounded-xl text-white"
+                    className="ui-select"
                     required
                   >
                     <option value="">Seleccionar...</option>
@@ -171,25 +173,25 @@ export default function MerchantProfileView({ onUpdate }: MerchantProfileViewPro
                 </div>
               </div>
 
-              <div>
-                <label className="block text-sm text-[#a78bfa] mb-2">Dirección / Ubicación</label>
+              <div className="ui-field">
+                <label className="ui-label">Dirección / Ubicación</label>
                 <input
                   type="text"
                   value={formData.ubicacion}
                   onChange={(e) => setFormData({ ...formData, ubicacion: e.target.value })}
-                  className="w-full px-4 py-3 bg-[#0f0a1a] border border-[#8B5CF6]/30 rounded-xl text-white"
+                  className="ui-input"
                   placeholder="Av. América entre 6 y 7"
                   required
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm text-[#a78bfa] mb-2">Zona</label>
+              <div className="ui-grid-2">
+                <div className="ui-field">
+                  <label className="ui-label">Zona</label>
                   <select
                     value={formData.zona}
                     onChange={(e) => setFormData({ ...formData, zona: e.target.value })}
-                    className="w-full px-4 py-3 bg-[#0f0a1a] border border-[#8B5CF6]/30 rounded-xl text-white"
+                    className="ui-select"
                     required
                   >
                     <option value="">Seleccionar...</option>
@@ -198,12 +200,12 @@ export default function MerchantProfileView({ onUpdate }: MerchantProfileViewPro
                     ))}
                   </select>
                 </div>
-                <div>
-                  <label className="block text-sm text-[#a78bfa] mb-2">Universidad Cercana</label>
+                <div className="ui-field">
+                  <label className="ui-label">Universidad Cercana</label>
                   <select
                     value={formData.universidad_cercana}
                     onChange={(e) => setFormData({ ...formData, universidad_cercana: e.target.value })}
-                    className="w-full px-4 py-3 bg-[#0f0a1a] border border-[#8B5CF6]/30 rounded-xl text-white"
+                    className="ui-select"
                     required
                   >
                     <option value="">Seleccionar...</option>
@@ -214,13 +216,13 @@ export default function MerchantProfileView({ onUpdate }: MerchantProfileViewPro
                 </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-4">
-                <div>
-                  <label className="block text-sm text-[#a78bfa] mb-2">Tipo de Comercio</label>
+              <div className="ui-grid-3">
+                <div className="ui-field">
+                  <label className="ui-label">Tipo de Comercio</label>
                   <select
                     value={formData.tipo_comercio}
                     onChange={(e) => setFormData({ ...formData, tipo_comercio: e.target.value })}
-                    className="w-full px-4 py-3 bg-[#0f0a1a] border border-[#8B5CF6]/30 rounded-xl text-white"
+                    className="ui-select"
                     required
                   >
                     <option value="">Seleccionar...</option>
@@ -229,57 +231,54 @@ export default function MerchantProfileView({ onUpdate }: MerchantProfileViewPro
                     ))}
                   </select>
                 </div>
-                <div>
-                  <label className="block text-sm text-[#a78bfa] mb-2">Hora Apertura</label>
+                <div className="ui-field">
+                  <label className="ui-label">Hora Apertura</label>
                   <input
                     type="time"
                     value={formData.horario_apertura}
                     onChange={(e) => setFormData({ ...formData, horario_apertura: e.target.value })}
-                    className="w-full px-4 py-3 bg-[#0f0a1a] border border-[#8B5CF6]/30 rounded-xl text-white"
+                    className="ui-input"
                     required
                   />
                 </div>
-                <div>
-                  <label className="block text-sm text-[#a78bfa] mb-2">Hora Cierre</label>
+                <div className="ui-field">
+                  <label className="ui-label">Hora Cierre</label>
                   <input
                     type="time"
                     value={formData.horario_cierre}
                     onChange={(e) => setFormData({ ...formData, horario_cierre: e.target.value })}
-                    className="w-full px-4 py-3 bg-[#0f0a1a] border border-[#8B5CF6]/30 rounded-xl text-white"
+                    className="ui-input"
                     required
                   />
                 </div>
               </div>
 
-              <button
-                type="submit"
-                disabled={guardando}
-                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#7c3aed] to-[#6d28d9] text-white rounded-xl hover:shadow-[0_0_20px_rgba(124,58,237,0.4)] transition-all disabled:opacity-50"
-              >
+              <button type="submit" disabled={guardando} className={styles.buttonPrimary + " ui-btn-primary"}>
                 {guardando ? "Guardando..." : "Guardar Cambios"}
               </button>
             </form>
           ) : (
             <ComercioDisplay comercio={comercio!} />
           )}
+          </div>
         </div>
 
         <div className="space-y-6">
-          <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/10 rounded-2xl p-6 border border-[#8B5CF6]/30">
+          <div className={styles.panelCard}>
             <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-[#8B5CF6] flex items-center justify-center">
+              <div className={styles.headerAvatar + " mx-auto mb-3"}>
                 <Store className="text-white" size={32} />
               </div>
-              <h3 className="text-lg font-bold text-white">{comercio?.nombre_comercio}</h3>
-              <p className="text-gray-400 text-sm capitalize">{comercio?.rubro}</p>
+              <h3 className={styles.titleSmall}>{comercio?.nombre_comercio}</h3>
+              <p className={styles.mutedText + " text-sm capitalize"}>{comercio?.rubro}</p>
             </div>
           </div>
 
           {comercio?.score_actual !== null && (
-            <div className="bg-[#1a1625]/80 backdrop-blur-xl rounded-2xl p-6 border border-[#8B5CF6]/20">
-              <h4 className="text-white font-bold mb-3">Score</h4>
+            <div className="panel-card">
+              <h4 className={styles.titleSmall + " mb-3"}>Score</h4>
               <div className="flex items-center justify-center">
-                <span className="text-4xl font-bold text-[#a78bfa]">{comercio?.score_actual}</span>
+                <span className={styles.valueXL + " " + styles.accentText}>{comercio?.score_actual}</span>
               </div>
             </div>
           )}
@@ -294,41 +293,52 @@ function ComercioForm({
   setFormData,
   guardando,
   onSubmit,
+  onEdit,
 }: {
-  formData: typeof import("@/services/api").Comercio;
+  formData: {
+    nombre_comercio: string;
+    rubro: string;
+    ubicacion: string;
+    zona: string;
+    universidad_cercana: string;
+    tipo_comercio: string;
+    horario_apertura: string;
+    horario_cierre: string;
+  };
   setFormData: React.Dispatch<React.SetStateAction<typeof formData>>;
   guardando: boolean;
   onSubmit: (e: React.FormEvent) => void;
+  onEdit?: () => void;
 }) {
   return (
-    <div className="bg-[#1a1625]/80 backdrop-blur-xl rounded-2xl p-8 border border-[#8B5CF6]/20">
+    <div className={styles.panelCard}>
       <div className="text-center mb-8">
-        <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-[#8B5CF6]/20 flex items-center justify-center">
+        <div className={styles.headerAvatar + " mx-auto mb-4"}>
           <Store className="text-[#a78bfa]" size={40} />
         </div>
-        <h2 className="text-2xl font-bold text-white mb-2">Completa los datos de tu Comercio</h2>
-        <p className="text-gray-400">Registra la información de tu negocio para comenzar</p>
+        <h2 className={styles.titleLarge + " mb-2"}>Completa los datos de tu Comercio</h2>
+        <p className={styles.mutedText}>Registra la información de tu negocio para comenzar</p>
       </div>
 
-      <form onSubmit={onSubmit} className="max-w-2xl mx-auto space-y-4">
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm text-[#a78bfa] mb-2">Nombre del Comercio</label>
+        <form onSubmit={onSubmit} className={styles.authForm}>
+        <div className={styles.grid2}>
+          <div className="ui-field">
+            <label className="ui-label">Nombre del Comercio</label>
             <input
               type="text"
               value={formData.nombre_comercio}
               onChange={(e) => setFormData({ ...formData, nombre_comercio: e.target.value })}
-              className="w-full px-4 py-3 bg-[#0f0a1a] border border-[#8B5CF6]/30 rounded-xl text-white placeholder-gray-500"
+              className="ui-input"
               placeholder="Ej: Tacos El Güero"
               required
             />
           </div>
-          <div>
-            <label className="block text-sm text-[#a78bfa] mb-2">Rubro</label>
+          <div className="ui-field">
+            <label className="ui-label">Rubro</label>
             <select
               value={formData.rubro}
               onChange={(e) => setFormData({ ...formData, rubro: e.target.value })}
-              className="w-full px-4 py-3 bg-[#0f0a1a] border border-[#8B5CF6]/30 rounded-xl text-white"
+              className="ui-select"
               required
             >
               <option value="">Seleccionar...</option>
@@ -339,28 +349,28 @@ function ComercioForm({
           </div>
         </div>
 
-        <div>
-          <label className="block text-sm text-[#a78bfa] mb-2">Dirección / Ubicación</label>
-          <div className="relative">
-            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8B5CF6]" size={18} />
+        <div className="ui-field">
+          <label className="ui-label">Dirección / Ubicación</label>
+          <div className="ui-input-wrap">
+            <MapPin className="ui-icon-left" size={18} />
             <input
               type="text"
               value={formData.ubicacion}
               onChange={(e) => setFormData({ ...formData, ubicacion: e.target.value })}
-              className="w-full pl-10 px-4 py-3 bg-[#0f0a1a] border border-[#8B5CF6]/30 rounded-xl text-white placeholder-gray-500"
+              className="ui-input ui-input-icon-pad"
               placeholder="Av. América entre 6 y 7"
               required
             />
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm text-[#a78bfa] mb-2">Zona</label>
+        <div className={styles.grid2}>
+          <div className="ui-field">
+            <label className="ui-label">Zona</label>
             <select
               value={formData.zona}
               onChange={(e) => setFormData({ ...formData, zona: e.target.value })}
-              className="w-full px-4 py-3 bg-[#0f0a1a] border border-[#8B5CF6]/30 rounded-xl text-white"
+              className="ui-select"
               required
             >
               <option value="">Seleccionar...</option>
@@ -369,12 +379,12 @@ function ComercioForm({
               ))}
             </select>
           </div>
-          <div>
-            <label className="block text-sm text-[#a78bfa] mb-2">Universidad Cercana</label>
+          <div className="ui-field">
+            <label className="ui-label">Universidad Cercana</label>
             <select
               value={formData.universidad_cercana}
               onChange={(e) => setFormData({ ...formData, universidad_cercana: e.target.value })}
-              className="w-full px-4 py-3 bg-[#0f0a1a] border border-[#8B5CF6]/30 rounded-xl text-white"
+              className="ui-select"
               required
             >
               <option value="">Seleccionar...</option>
@@ -385,13 +395,13 @@ function ComercioForm({
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-4">
-          <div>
-            <label className="block text-sm text-[#a78bfa] mb-2">Tipo de Comercio</label>
+        <div className={styles.grid3}>
+          <div className="ui-field">
+            <label className="ui-label">Tipo de Comercio</label>
             <select
               value={formData.tipo_comercio}
               onChange={(e) => setFormData({ ...formData, tipo_comercio: e.target.value })}
-              className="w-full px-4 py-3 bg-[#0f0a1a] border border-[#8B5CF6]/30 rounded-xl text-white"
+              className="ui-select"
               required
             >
               <option value="">Seleccionar...</option>
@@ -400,36 +410,32 @@ function ComercioForm({
               ))}
             </select>
           </div>
-          <div>
-            <label className="block text-sm text-[#a78bfa] mb-2">Hora Apertura</label>
+          <div className="ui-field">
+            <label className="ui-label">Hora Apertura</label>
             <input
               type="time"
               value={formData.horario_apertura}
               onChange={(e) => setFormData({ ...formData, horario_apertura: e.target.value })}
-              className="w-full px-4 py-3 bg-[#0f0a1a] border border-[#8B5CF6]/30 rounded-xl text-white"
+              className="ui-input"
               required
             />
           </div>
-          <div>
-            <label className="block text-sm text-[#a78bfa] mb-2">Hora Cierre</label>
+          <div className="ui-field">
+            <label className="ui-label">Hora Cierre</label>
             <input
               type="time"
               value={formData.horario_cierre}
               onChange={(e) => setFormData({ ...formData, horario_cierre: e.target.value })}
-              className="w-full px-4 py-3 bg-[#0f0a1a] border border-[#8B5CF6]/30 rounded-xl text-white"
+              className="ui-input"
               required
             />
           </div>
         </div>
 
-        <button
-          type="submit"
-          disabled={guardando}
-          className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-[#7c3aed] to-[#6d28d9] text-white font-bold rounded-xl hover:shadow-[0_0_30px_rgba(124,58,237,0.5)] transition-all disabled:opacity-50"
-        >
+        <button type="submit" disabled={guardando} className={styles.buttonPrimary + " ui-btn-primary"}>
           {guardando ? "Guardando..." : "Crear Comercio"}
         </button>
-      </form>
+        </form>
     </div>
   );
 }
@@ -437,24 +443,24 @@ function ComercioForm({
 function ComercioDisplay({ comercio }: { comercio: Comercio }) {
   return (
     <div className="grid grid-cols-2 gap-6">
-      <div className="p-4 bg-[#0f0a1a] rounded-xl">
-        <p className="text-gray-400 text-sm mb-1">Rubro</p>
+      <div className="panel-card panel-card-compact">
+        <p className={styles.mutedText + " text-sm mb-1"}>Rubro</p>
         <p className="text-white font-medium capitalize">{comercio.rubro}</p>
       </div>
-      <div className="p-4 bg-[#0f0a1a] rounded-xl">
-        <p className="text-gray-400 text-sm mb-1">Tipo</p>
+      <div className="panel-card panel-card-compact">
+        <p className={styles.mutedText + " text-sm mb-1"}>Tipo</p>
         <p className="text-white font-medium capitalize">{comercio.tipo_comercio}</p>
       </div>
-      <div className="p-4 bg-[#0f0a1a] rounded-xl col-span-2">
-        <p className="text-gray-400 text-sm mb-1">Ubicación</p>
+      <div className="panel-card panel-card-compact col-span-2">
+        <p className={styles.mutedText + " text-sm mb-1"}>Ubicación</p>
         <p className="text-white font-medium">{comercio.ubicacion}, {comercio.zona}</p>
       </div>
-      <div className="p-4 bg-[#0f0a1a] rounded-xl">
-        <p className="text-gray-400 text-sm mb-1">Universidad Cercana</p>
+      <div className="panel-card panel-card-compact">
+        <p className={styles.mutedText + " text-sm mb-1"}>Universidad Cercana</p>
         <p className="text-white font-medium">{comercio.universidad_cercana}</p>
       </div>
-      <div className="p-4 bg-[#0f0a1a] rounded-xl">
-        <p className="text-gray-400 text-sm mb-1">Horario</p>
+      <div className="panel-card panel-card-compact">
+        <p className={styles.mutedText + " text-sm mb-1"}>Horario</p>
         <p className="text-white font-medium flex items-center gap-2">
           <Clock size={16} />
           {comercio.horario_apertura} - {comercio.horario_cierre}

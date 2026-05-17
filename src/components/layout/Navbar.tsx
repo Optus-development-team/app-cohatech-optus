@@ -41,7 +41,7 @@ export default function Navbar() {
           </li>
           <li className={styles.navItem}>
             <Link 
-              href="/login" 
+              href="/register" 
               className={styles.navLink}
               onClick={() => setIsOpen(false)}
             >

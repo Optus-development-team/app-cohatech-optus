@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import { Calendar, Clock } from "lucide-react";
+import styles from "./Student.module.css";
 
 interface MetaAhorroFormProps {
   formData: {
@@ -60,18 +61,18 @@ export default function MetaAhorroForm({
   }, [formData.duracion]);
 
   return (
-    <div className="bg-[#1a1625]/80 backdrop-blur-xl rounded-2xl p-6 border border-[#8B5CF6]/30">
-      <h3 className="text-xl font-bold text-white mb-4">
+    <div className={styles.panelCard}>
+      <h3 className={styles.titleMedium + " mb-4"}>
         {editandoId ? "Editar Meta" : "Nueva Meta de Ahorro"}
       </h3>
-      <form onSubmit={onSubmit} className="space-y-4">
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm text-[#a78bfa] mb-2">Nombre de la Meta</label>
+      <form onSubmit={onSubmit} className={styles.authForm}>
+        <div className={styles.grid2}>
+          <div className="ui-field">
+            <label className="ui-label">Nombre de la Meta</label>
             <select
               value={formData.nombre_meta}
               onChange={(e) => setFormData({ ...formData, nombre_meta: e.target.value })}
-              className="w-full px-4 py-3 bg-[#0f0a1a] border border-[#8B5CF6]/30 rounded-xl text-white"
+              className="ui-select"
               required
             >
               <option value="">Seleccionar...</option>
@@ -80,13 +81,13 @@ export default function MetaAhorroForm({
               ))}
             </select>
           </div>
-          <div>
-            <label className="block text-sm text-[#a78bfa] mb-2">Monto Objetivo (Bs)</label>
+          <div className="ui-field">
+            <label className="ui-label">Monto Objetivo (Bs)</label>
             <input
               type="number"
               value={formData.monto_objetivo}
               onChange={(e) => setFormData({ ...formData, monto_objetivo: e.target.value })}
-              className="w-full px-4 py-3 bg-[#0f0a1a] border border-[#8B5CF6]/30 rounded-xl text-white placeholder-gray-500"
+              className="ui-input"
               placeholder="Ej: 300"
               min={10}
               max={50000}
@@ -97,18 +98,14 @@ export default function MetaAhorroForm({
 
         {!editandoId && (
           <div>
-            <label className="block text-sm text-[#a78bfa] mb-2">Duración de la Meta</label>
-            <div className="grid grid-cols-5 gap-2">
+            <label className="ui-label mb-2 block">Duración de la Meta</label>
+            <div className={styles.durationGrid}>
               {duraciones.map((d) => (
                 <button
                   key={d.value}
                   type="button"
                   onClick={() => setFormData({ ...formData, duracion: d.value })}
-                  className={`p-3 rounded-xl border transition-all ${
-                    formData.duracion === d.value
-                      ? "bg-[#7c3aed] border-[#7c3aed] text-white"
-                      : "bg-[#0f0a1a] border-[#8B5CF6]/30 text-gray-400 hover:border-[#8B5CF6]/60"
-                  }`}
+                  className={`${styles.durationOption} ${formData.duracion === d.value ? styles.durationOptionActive : styles.durationOptionInactive}`}
                 >
                   <div className="flex flex-col items-center gap-1">
                     <Clock size={18} />
@@ -118,7 +115,7 @@ export default function MetaAhorroForm({
               ))}
             </div>
             {fechaCalculada && (
-              <div className="mt-3 flex items-center gap-2 p-3 bg-[#8B5CF6]/10 border border-[#8B5CF6]/30 rounded-xl">
+              <div className={styles.durationInfo}>
                 <Calendar size={18} className="text-[#a78bfa]" />
                 <span className="text-sm text-gray-300">
                   Tu meta vence el: <span className="text-white font-medium">{fechaCalculada}</span>
@@ -128,18 +125,18 @@ export default function MetaAhorroForm({
           </div>
         )}
 
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
           <button
             type="submit"
             disabled={guardando || (!editandoId && !formData.duracion)}
-            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#7c3aed] to-[#6d28d9] text-white rounded-xl hover:shadow-[0_0_20px_rgba(124,58,237,0.4)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className={styles.buttonPrimary + " ui-btn-primary flex items-center justify-center gap-2"}
           >
             {guardando ? "Guardando..." : editandoId ? "Actualizar" : "Crear Meta"}
           </button>
           <button
             type="button"
             onClick={onCancel}
-            className="px-6 py-3 bg-[#8B5CF6]/20 text-[#a78bfa] rounded-xl hover:bg-[#8B5CF6]/30 transition-all"
+            className={styles.buttonSecondary + " ui-btn-primary"}
           >
             Cancelar
           </button>

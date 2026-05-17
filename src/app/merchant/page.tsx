@@ -76,10 +76,10 @@ export default function MerchantPanel() {
 
 function ConfigView() {
   return (
-    <div className="bg-[#1a1625]/80 backdrop-blur-xl rounded-2xl p-8 border border-[#8B5CF6]/20">
+    <div className="panel-card">
       <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-white mb-2">Configuración</h2>
-        <p className="text-gray-400">Administra tu cuenta y preferencias</p>
+        <h2 className="panel-title text-white text-2xl mb-2">Configuración</h2>
+        <p className="panel-subtitle">Administra tu cuenta y preferencias</p>
       </div>
       <div className="text-center text-gray-500 py-8">
         Próximamente...

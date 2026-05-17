@@ -3,6 +3,7 @@
 import { ReactNode } from "react";
 import StudentSidebar from "./StudentSidebar";
 import StudentHeader from "./StudentHeader";
+import styles from "./Student.module.css";
 
 interface StudentLayoutProps {
   children: ReactNode;
@@ -20,18 +21,21 @@ export default function StudentLayout({
   onLogout 
 }: StudentLayoutProps) {
   return (
-    <div className="min-h-screen bg-[#0f0a1a] flex">
-      <StudentSidebar 
-        activeTab={activeTab} 
-        onTabChange={onTabChange} 
-        onLogout={onLogout} 
-      />
-      <main className="flex-1 ml-64 p-8">
-        <div className="max-w-5xl mx-auto">
-          <StudentHeader userName={userName} />
-          {children}
-        </div>
-      </main>
+    <div className={styles.panelRoot}>
+      <div className={styles.panelBackdrop} />
+      <div className={styles.panelShell + " flex flex-col md:flex-row"}>
+        <StudentSidebar 
+          activeTab={activeTab} 
+          onTabChange={onTabChange} 
+          onLogout={onLogout} 
+        />
+        <main className={styles.panelContent + " flex-1 md:ml-64"}>
+          <div className={styles.panelContainer}>
+            <StudentHeader userName={userName} />
+            {children}
+          </div>
+        </main>
+      </div>
     </div>
   );
 }

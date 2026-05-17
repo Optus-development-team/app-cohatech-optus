@@ -14,17 +14,17 @@ export default function PhoneInput({ value, onChange }: PhoneInputProps) {
   };
 
   return (
-    <div>
-      <label className="block text-sm font-medium text-[#a78bfa] mb-2">
+    <div className="ui-field">
+      <label className="ui-label">
         Teléfono (opcional)
       </label>
-      <div className="relative">
-        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8B5CF6]" size={18} />
+      <div className="ui-input-wrap">
+        <Phone className="ui-icon-left" size={18} />
         <input
           type="tel"
           value={value}
           onChange={(e) => handlePhoneChange(e.target.value)}
-          className="w-full py-3 pl-10 pr-4 bg-[#0f0a1a]/80 border border-[#8B5CF6]/30 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-[#8B5CF6] focus:ring-2 focus:ring-[#8B5CF6]/20 transition-all"
+          className="ui-input ui-input-icon-pad"
           placeholder="69999999"
         />
       </div>

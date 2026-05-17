@@ -1,0 +1,188 @@
+.authPage {
+  min-height: calc(100dvh - 4rem);
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  padding-top: clamp(2.5rem, 8vh, 6rem);
+  padding-bottom: clamp(2.5rem, 7vh, 5rem);
+  margin: auto;
+  overflow: hidden;
+}
+
+.authBackdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at top, rgba(124, 58, 237, 0.16), transparent 55%);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.authShell {
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.authCardWrap {
+  position: relative;
+  width: 100%;
+  max-width: 34rem;
+}
+
+.authCardGlow {
+  position: absolute;
+  inset: -0.25rem;
+  border-radius: 1rem;
+  background: linear-gradient(90deg, rgba(167, 139, 250, 0.75), rgba(124, 58, 237, 0.85), rgba(109, 40, 217, 0.85));
+  filter: blur(20px);
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.authCard {
+  position: relative;
+  border-radius: 1rem;
+  padding: clamp(1.25rem, 2.2vw, 2rem);
+  background: rgba(26, 22, 37, 0.9);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.authSection {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.authHeader {
+  text-align: center;
+  margin-bottom: clamp(1.25rem, 2vw, 1.75rem);
+}
+
+.authTitle {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 4vw, 2.4rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.authSubtitle {
+  margin-top: 0.6rem;
+  color: var(--color-text-muted);
+}
+
+.authForm {
+  display: grid;
+  gap: 1.1rem;
+}
+
+.authField {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.authInputWrap {
+  position: relative;
+}
+
+.authInput {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  background: rgba(15, 10, 26, 0.8);
+  color: #ffffff;
+  padding: 0.82rem 1rem;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.authInput:focus {
+  outline: none;
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+}
+
+.authInputWithIcon {
+  padding-left: 2.6rem;
+  padding-right: 2.75rem;
+}
+
+.authIcon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #8b5cf6;
+}
+
+.authIconButton {
+  position: absolute;
+  right: 0.7rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #8b5cf6;
+}
+
+.authSegment {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.authForm :global(label) {
+  margin-bottom: 0.6rem;
+}
+
+.authFooter {
+  margin-top: 1.4rem;
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+@media (min-width: 640px) {
+  .authPage {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .authForm {
+    gap: 1.25rem;
+  }
+
+  .authSection {
+    gap: 1.35rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .authPage {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .authCard {
+    padding: 1.05rem;
+  }
+
+  .authHeader {
+    margin-bottom: 1rem;
+  }
+
+  .authSegment {
+    grid-template-columns: 1fr;
+  }
+}

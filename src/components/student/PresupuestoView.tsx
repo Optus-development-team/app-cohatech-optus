@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import styles from "./Student.module.css";
 import { 
   Calendar, 
   DollarSign, 
@@ -62,13 +63,14 @@ export default function PresupuestoView({ presupuesto, onSave, onCreate }: Presu
   }
 
   return (
-    <div className="grid grid-cols-3 gap-6">
-      <div className="col-span-2 bg-[#1a1625]/80 backdrop-blur-xl rounded-2xl p-6 border border-[#8B5CF6]/20">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="col-span-2">
+        <div className={styles.panelCard}>
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-white">Mi Presupuesto</h2>
+          <h2 className={styles.titleMedium}>Mi Presupuesto</h2>
           <button
             onClick={() => setEditando(!editando)}
-            className="flex items-center gap-2 px-4 py-2 bg-[#8B5CF6]/20 text-[#a78bfa] rounded-lg hover:bg-[#8B5CF6]/30 transition-all"
+            className={styles.buttonSecondary + " flex items-center gap-2 px-4 py-2 rounded-lg transition-all"}
           >
             <Edit3 size={16} />
             Editar
@@ -76,81 +78,77 @@ export default function PresupuestoView({ presupuesto, onSave, onCreate }: Presu
         </div>
 
         {editando ? (
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm text-[#a78bfa] mb-2">Universidad</label>
+          <form onSubmit={handleSubmit} className="ui-form-stack">
+            <div className="ui-grid-2">
+              <div className="ui-field">
+                <label className="ui-label">Universidad</label>
                 <input
                   type="text"
                   value={formData.universidad}
                   onChange={(e) => setFormData({ ...formData, universidad: e.target.value })}
-                  className="w-full px-4 py-3 bg-[#0f0a1a] border border-[#8B5CF6]/30 rounded-xl text-white"
+                  className="ui-input"
                   disabled
                 />
               </div>
-              <div>
-                <label className="block text-sm text-[#a78bfa] mb-2">Carrera</label>
+              <div className="ui-field">
+                <label className="ui-label">Carrera</label>
                 <input
                   type="text"
                   value={formData.carrera}
                   onChange={(e) => setFormData({ ...formData, carrera: e.target.value })}
-                  className="w-full px-4 py-3 bg-[#0f0a1a] border border-[#8B5CF6]/30 rounded-xl text-white"
+                  className="ui-input"
                   disabled
                 />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm text-[#a78bfa] mb-2">Presupuesto Semanal (Bs)</label>
+            <div className="ui-grid-2">
+              <div className="ui-field">
+                <label className="ui-label">Presupuesto Semanal (Bs)</label>
                 <input
                   type="number"
                   value={formData.presupuesto_semanal}
                   onChange={(e) => setFormData({ ...formData, presupuesto_semanal: e.target.value })}
-                  className="w-full px-4 py-3 bg-[#0f0a1a] border border-[#8B5CF6]/30 rounded-xl text-white"
+                  className="ui-input"
                   min={0}
                   max={10000}
                 />
               </div>
-              <div>
-                <label className="block text-sm text-[#a78bfa] mb-2">Presupuesto Mensual (Bs)</label>
+              <div className="ui-field">
+                <label className="ui-label">Presupuesto Mensual (Bs)</label>
                 <input
                   type="number"
                   value={formData.presupuesto_mensual}
                   onChange={(e) => setFormData({ ...formData, presupuesto_mensual: e.target.value })}
-                  className="w-full px-4 py-3 bg-[#0f0a1a] border border-[#8B5CF6]/30 rounded-xl text-white"
+                  className="ui-input"
                   min={0}
                   max={50000}
                 />
               </div>
             </div>
-            <button
-              type="submit"
-              disabled={guardando}
-              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#7c3aed] to-[#6d28d9] text-white rounded-xl hover:shadow-[0_0_20px_rgba(124,58,237,0.4)] transition-all disabled:opacity-50"
-            >
+            <button type="submit" disabled={guardando} className={styles.buttonPrimary + " ui-btn-primary flex items-center justify-center gap-2"}>
               {guardando ? "Guardando..." : <><Save size={18} /> Guardar Cambios</>}
             </button>
           </form>
         ) : (
           <PresupuestoDisplay presupuesto={presupuesto} />
         )}
+        </div>
       </div>
 
       <div className="space-y-6">
-        <div className="bg-[#1a1625]/80 backdrop-blur-xl rounded-2xl p-6 border border-[#8B5CF6]/20">
-          <h3 className="text-white font-bold mb-4">Nivel Estudiantil</h3>
+        <div className={styles.panelCard}>
+          <h3 className={styles.titleSmall + " mb-4"}>Nivel Estudiantil</h3>
           <div className="text-center">
-            <div className="w-20 h-20 mx-auto mb-3 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 flex items-center justify-center text-3xl">
+            <div className={styles.iconCircleLarge + " " + styles.iconCirclePrimary}>
               🎓
             </div>
-            <p className="text-xl font-bold text-amber-400">{presupuesto.nivel_actual}</p>
-            <p className="text-gray-400 text-sm">{presupuesto.puntos_actuales} puntos</p>
+            <p className={styles.valueLarge + " text-amber-400"}>{presupuesto.nivel_actual}</p>
+            <p className={styles.mutedText + " text-sm"}>{presupuesto.puntos_actuales} puntos</p>
           </div>
         </div>
-
-        <div className="bg-gradient-to-r from-green-500/20 to-emerald-500/10 rounded-2xl p-6 border border-green-500/30">
-          <h3 className="text-white font-bold mb-3">Ahorro Total</h3>
-          <p className="text-3xl font-bold text-green-400">{presupuesto.ahorro_total} <span className="text-lg">Bs</span></p>
+        <div className={styles.panelCard}>
+          <h3 className={styles.titleSmall + " mb-3"}>Ahorro Total</h3>
+          <p className={styles.valueXL + " text-green-400"}>{presupuesto.ahorro_total} <span className="text-lg">Bs</span></p>
         </div>
       </div>
     </div>
@@ -160,23 +158,27 @@ export default function PresupuestoView({ presupuesto, onSave, onCreate }: Presu
 function PresupuestoDisplay({ presupuesto }: { presupuesto: Presupuesto }) {
   return (
     <div className="grid grid-cols-2 gap-6">
-      <div className="p-6 bg-gradient-to-br from-[#7c3aed]/20 to-[#6d28d9]/10 rounded-2xl border border-[#8B5CF6]/30">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-lg bg-[#7c3aed] flex items-center justify-center">
+      <div className={styles.budgetCardPrimary}>
+        <div className={styles.metricRow}>
+          <div className={styles.metricIconPrimary}>
             <Calendar className="text-white" size={20} />
           </div>
-          <span className="text-gray-400">Semanal</span>
+          <span className={styles.metricLabel}>Semanal</span>
         </div>
-        <p className="text-3xl font-bold text-white">{presupuesto.presupuesto_semanal} <span className="text-lg text-gray-400">Bs</span></p>
+        <p className={styles.metricValue}>
+          {presupuesto.presupuesto_semanal} <span className="text-lg text-gray-400">Bs</span>
+        </p>
       </div>
-      <div className="p-6 bg-gradient-to-br from-cyan-500/20 to-blue-500/10 rounded-2xl border border-cyan-500/30">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-lg bg-cyan-500 flex items-center justify-center">
+      <div className={styles.budgetCardCyan}>
+        <div className={styles.metricRow}>
+          <div className={styles.metricIconCyan}>
             <DollarSign className="text-white" size={20} />
           </div>
-          <span className="text-gray-400">Mensual</span>
+          <span className={styles.metricLabel}>Mensual</span>
         </div>
-        <p className="text-3xl font-bold text-white">{presupuesto.presupuesto_mensual} <span className="text-lg text-gray-400">Bs</span></p>
+        <p className={styles.metricValue}>
+          {presupuesto.presupuesto_mensual} <span className="text-lg text-gray-400">Bs</span>
+        </p>
       </div>
     </div>
   );
@@ -188,29 +190,30 @@ function PresupuestoForm({
   guardando, 
   onSubmit 
 }: { 
-  formData: { universidad: string; carrera: string; presupuesto_semanal: number; presupuesto_mensual: number };
+  formData: { universidad: string; carrera: string; presupuesto_semanal: number | string; presupuesto_mensual: number | string };
   setFormData: React.Dispatch<React.SetStateAction<typeof formData>>;
   guardando: boolean;
   onSubmit: (e: React.FormEvent) => void;
 }) {
   return (
-    <div className="bg-[#1a1625]/80 backdrop-blur-xl rounded-2xl p-8 border border-[#8B5CF6]/20">
-      <div className="text-center mb-8">
-        <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-[#8B5CF6]/20 flex items-center justify-center">
-          <Wallet className="text-[#a78bfa]" size={40} />
+    <div className={styles.panelCard}>
+      <div className={styles.authSection}>
+        <div className={styles.authHeader}>
+          <div className={styles.iconCircleLarge + " " + styles.iconCirclePrimary}>
+            <Wallet className="text-[#a78bfa]" size={40} />
+          </div>
+          <h2 className={styles.panelTitle}>Configura tu Presupuesto</h2>
+          <p className={styles.panelSubtitle}>Define tu presupuesto estudiantil para comenzar a gestionar tus finanzas</p>
         </div>
-        <h2 className="text-2xl font-bold text-white mb-2">Configura tu Presupuesto</h2>
-        <p className="text-gray-400">Define tu presupuesto estudiantil para comenzar a gestionar tus finanzas</p>
-      </div>
 
-      <form onSubmit={onSubmit} className="max-w-xl mx-auto space-y-4">
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm text-[#a78bfa] mb-2">Universidad</label>
+        <form onSubmit={onSubmit} className={`${styles.authForm} max-w-xl mx-auto`}>
+        <div className="ui-grid-2">
+          <div className="ui-field">
+            <label className="ui-label">Universidad</label>
             <select
               value={formData.universidad}
               onChange={(e) => setFormData({ ...formData, universidad: e.target.value })}
-              className="w-full px-4 py-3 bg-[#0f0a1a] border border-[#8B5CF6]/30 rounded-xl text-white"
+              className="ui-select"
               required
             >
               <option value="">Seleccionar...</option>
@@ -219,39 +222,39 @@ function PresupuestoForm({
               ))}
             </select>
           </div>
-          <div>
-            <label className="block text-sm text-[#a78bfa] mb-2">Carrera</label>
+          <div className="ui-field">
+            <label className="ui-label">Carrera</label>
             <input
               type="text"
               value={formData.carrera}
               onChange={(e) => setFormData({ ...formData, carrera: e.target.value })}
-              className="w-full px-4 py-3 bg-[#0f0a1a] border border-[#8B5CF6]/30 rounded-xl text-white"
+              className="ui-input"
               placeholder="Ej: Ing. Sistemas"
               required
             />
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm text-[#a78bfa] mb-2">Presupuesto Semanal (Bs)</label>
+        <div className="ui-grid-2">
+          <div className="ui-field">
+            <label className="ui-label">Presupuesto Semanal (Bs)</label>
             <input
               type="number"
               value={formData.presupuesto_semanal}
               onChange={(e) => setFormData({ ...formData, presupuesto_semanal: e.target.value })}
-              className="w-full px-4 py-3 bg-[#0f0a1a] border border-[#8B5CF6]/30 rounded-xl text-white placeholder-gray-500"
+              className="ui-input"
               placeholder="Ej: 150"
               min={0}
               max={10000}
               required
             />
           </div>
-          <div>
-            <label className="block text-sm text-[#a78bfa] mb-2">Presupuesto Mensual (Bs)</label>
+          <div className="ui-field">
+            <label className="ui-label">Presupuesto Mensual (Bs)</label>
             <input
               type="number"
               value={formData.presupuesto_mensual}
               onChange={(e) => setFormData({ ...formData, presupuesto_mensual: e.target.value })}
-              className="w-full px-4 py-3 bg-[#0f0a1a] border border-[#8B5CF6]/30 rounded-xl text-white placeholder-gray-500"
+              className="ui-input"
               placeholder="Ej: 600"
               min={0}
               max={50000}
@@ -259,14 +262,11 @@ function PresupuestoForm({
             />
           </div>
         </div>
-        <button
-          type="submit"
-          disabled={guardando}
-          className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-[#7c3aed] to-[#6d28d9] text-white font-bold rounded-xl hover:shadow-[0_0_30px_rgba(124,58,237,0.5)] transition-all disabled:opacity-50"
-        >
+        <button type="submit" disabled={guardando} className={styles.buttonPrimary + " ui-btn-primary flex items-center justify-center gap-2"}>
           {guardando ? "Creando..." : <><CheckCircle size={20} /> Crear Presupuesto</>}
         </button>
       </form>
+      </div>
     </div>
   );
 }

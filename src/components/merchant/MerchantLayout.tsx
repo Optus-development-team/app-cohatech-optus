@@ -1,6 +1,7 @@
 "use client";
 
 import MerchantSidebar from "./MerchantSidebar";
+import styles from "./Merchant.module.css";
 
 interface MerchantLayoutProps {
   userName: string;
@@ -12,18 +13,25 @@ interface MerchantLayoutProps {
 
 export default function MerchantLayout({ userName, activeTab, onTabChange, onLogout, children }: MerchantLayoutProps) {
   return (
-    <div className="min-h-screen bg-[#0f0a1a]">
-      <MerchantSidebar
-        activeTab={activeTab}
-        onTabChange={onTabChange}
-        onLogout={onLogout}
-      />
-      <div className="ml-64 p-8">
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-white">Hola, {userName}</h1>
-          <p className="text-gray-400">Bienvenido al panel de comerciante</p>
+    <div className={styles.panelRoot}>
+      <div className={styles.panelBackdrop} />
+      <div className={styles.panelShell + " flex flex-col md:flex-row"}>
+        <MerchantSidebar
+          activeTab={activeTab}
+          onTabChange={onTabChange}
+          onLogout={onLogout}
+        />
+        <div className={styles.panelContent + " flex-1 md:ml-64"}>
+          <div className={styles.panelContainer}>
+            <div className={styles.panelHeader}>
+              <div>
+                <h1 className={styles.panelTitle}>Hola, {userName}</h1>
+                <p className={styles.panelSubtitle}>Bienvenido al panel de comerciante</p>
+              </div>
+            </div>
+            {children}
+          </div>
         </div>
-        {children}
       </div>
     </div>
   );

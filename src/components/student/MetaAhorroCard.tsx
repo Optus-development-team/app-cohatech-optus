@@ -2,6 +2,7 @@
 
 import { Target, Pencil, Trash2, Pause, Play, Calendar } from "lucide-react";
 import { MetaAhorro } from "@/services/api";
+import styles from "./Student.module.css";
 
 interface MetaAhorroCardProps {
   meta: MetaAhorro;
@@ -14,13 +15,11 @@ export default function MetaAhorroCard({ meta, onEdit, onToggle, onDelete }: Met
   const isActiva = meta.estado_meta === "activa";
 
   return (
-    <div className={`bg-[#1a1625]/80 backdrop-blur-xl rounded-2xl p-6 border ${
+    <div className={`${styles.panelCard} ${
       isActiva ? "border-[#8B5CF6]/30" : "border-gray-600/30"
     }`}>
       <div className="flex items-start justify-between mb-4">
-        <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-          isActiva ? "bg-gradient-to-r from-[#7c3aed] to-[#6d28d9]" : "bg-gray-600"
-        }`}>
+        <div className={`${styles.metricIconPrimary} ${isActiva ? styles.gradientBadgePrimary : "bg-gray-600"}`}>
           <Target className="text-white" size={24} />
         </div>
         <span className={`px-3 py-1 rounded-full text-xs font-medium ${
@@ -39,9 +38,9 @@ export default function MetaAhorroCard({ meta, onEdit, onToggle, onDelete }: Met
           <span className="text-gray-400">Progreso</span>
           <span className="text-[#a78bfa] font-medium">{meta.porcentaje_avance.toFixed(1)}%</span>
         </div>
-        <div className="w-full h-2 bg-[#0f0a1a] rounded-full overflow-hidden">
+        <div className={styles.progressTrack}>
           <div
-            className="h-full bg-gradient-to-r from-[#7c3aed] to-[#6d28d9] rounded-full transition-all duration-500"
+            className={`${styles.progressFill} ${styles.progressFillPrimary}`}
             style={{ width: `${Math.min(meta.porcentaje_avance, 100)}%` }}
           />
         </div>
@@ -56,27 +55,20 @@ export default function MetaAhorroCard({ meta, onEdit, onToggle, onDelete }: Met
         <span>Fecha límite: {new Date(meta.fecha_limite).toLocaleDateString("es-BO")}</span>
       </div>
 
-      <div className="flex gap-2">
-        <button
-          onClick={onToggle}
-          className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg transition-all ${
-            isActiva
-              ? "bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30"
-              : "bg-green-500/20 text-green-400 hover:bg-green-500/30"
-          }`}
-        >
+      <div className="flex flex-col sm:flex-row gap-2">
+        <button onClick={onToggle} className={`flex-1 min-h-[48px] flex items-center justify-center gap-2 py-2 rounded-lg transition-all ${isActiva ? "bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30" : "bg-green-500/20 text-green-400 hover:bg-green-500/30"}`}>
           {isActiva ? <Pause size={16} /> : <Play size={16} />}
           {isActiva ? "Pausar" : "Activar"}
         </button>
         <button
           onClick={onEdit}
-          className="flex items-center justify-center p-2 bg-[#8B5CF6]/20 text-[#a78bfa] rounded-lg hover:bg-[#8B5CF6]/30 transition-all"
+          className="flex items-center justify-center min-h-[48px] min-w-[48px] p-2 bg-[#8B5CF6]/20 text-[#a78bfa] rounded-lg hover:bg-[#8B5CF6]/30 transition-all"
         >
           <Pencil size={16} />
         </button>
         <button
           onClick={onDelete}
-          className="flex items-center justify-center p-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-all"
+          className="flex items-center justify-center min-h-[48px] min-w-[48px] p-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-all"
         >
           <Trash2 size={16} />
         </button>

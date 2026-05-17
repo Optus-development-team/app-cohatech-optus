@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Plus, AlertCircle } from "lucide-react";
+import styles from "./Student.module.css";
 import {
   MetaAhorro,
   getMetasAhorro,
@@ -125,14 +126,14 @@ export default function MetaAhorroView({ refreshTrigger }: MetaAhorroViewProps) 
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className={styles.panelHeader}>
         <div>
-          <h2 className="text-2xl font-bold text-white">Metas de Ahorro</h2>
-          <p className="text-gray-400">Define y gestiona tus objetivos de ahorro</p>
+          <h2 className={styles.panelTitle}>Metas de Ahorro</h2>
+          <p className={styles.panelSubtitle}>Define y gestiona tus objetivos de ahorro</p>
         </div>
         <button
           onClick={() => setShowForm(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#7c3aed] to-[#6d28d9] text-white rounded-xl hover:shadow-[0_0_20px_rgba(124,58,237,0.4)] transition-all"
+          className={styles.buttonPrimary + " ui-btn-primary inline-flex items-center justify-center gap-2 px-5 w-auto"}
         >
           <Plus size={18} />
           Nueva Meta
@@ -140,7 +141,7 @@ export default function MetaAhorroView({ refreshTrigger }: MetaAhorroViewProps) 
       </div>
 
       {error && (
-        <div className="flex items-center gap-2 p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400">
+        <div className={styles.statusAlert + " " + styles.statusError}>
           <AlertCircle size={18} />
           {error}
         </div>
