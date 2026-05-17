@@ -96,6 +96,22 @@
   object-fit: contain;
 }
 
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #9353d0;
+  font-weight: 600;
+}
+
+.userIcon {
+  color: #9353d0;
+}
+
+.userName {
+  font-size: 0.95rem;
+}
+
 /* Mobile Menu Toggle */
 .toggle {
   display: none;

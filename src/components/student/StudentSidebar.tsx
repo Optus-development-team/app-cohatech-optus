@@ -26,26 +26,24 @@ const navItems = [
 export default function StudentSidebar({ activeTab, onTabChange, onLogout }: StudentSidebarProps) {
   return (
     <aside className={styles.sidebar}>
-      
+      <div className={styles.sidebarContent}>
+        <nav className={styles.sidebarNav}>
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => onTabChange(item.id)}
+              className={`${styles.navItem} ${
+                activeTab === item.id
+                  ? styles.navItemActive
+                  : ""
+              }`}
+            >
+              <item.icon size={20} />
+              <span className="font-medium">{item.label}</span>
+            </button>
+          ))}
+        </nav>
 
-      <nav className={styles.sidebarNav}>
-        {navItems.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => onTabChange(item.id)}
-            className={`${styles.navItem} ${
-              activeTab === item.id
-                ? styles.navItemActive
-                : ""
-            }`}
-          >
-            <item.icon size={20} />
-            <span className="font-medium">{item.label}</span>
-          </button>
-        ))}
-      </nav>
-
-      <div className="p-4">
         <button
           onClick={onLogout}
           className={styles.logoutBtn + " w-full flex items-center gap-3 transition-all"}

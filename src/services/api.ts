@@ -13,7 +13,7 @@ interface RegisterData {
   tipo_usuario: "estudiante" | "comercio";
 }
 
-interface LoginResponse {
+export interface LoginResponse {
   access_token: string;
   usuario: {
     id_usuario: string;
@@ -24,7 +24,7 @@ interface LoginResponse {
   };
 }
 
-interface RegisterResponse {
+export interface RegisterResponse {
   message?: string;
   usuario?: {
     id_usuario: string;

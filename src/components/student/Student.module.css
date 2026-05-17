@@ -98,8 +98,15 @@
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   z-index: 40;
-  overflow-y: auto;
   transition: transform 200ms ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebarContent {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .sidebarNav {
@@ -149,6 +156,7 @@
 
 .logoutBtn {
   margin-top: auto;
+  margin: auto 1rem 1.5rem;
   min-height: 48px;
   padding: 0.85rem 1rem;
   background: rgba(239, 68, 68, 0.1);
@@ -451,14 +459,13 @@
   position: fixed;
   left: 0;
   top: 70px;
-  width: 16rem;
+  width: 14rem;
   height: calc(100dvh - 70px);
   background: rgba(26, 22, 37, 0.94);
   border-right: 1px solid rgba(139, 92, 246, 0.2);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   z-index: 40;
-  overflow-y: auto;
   transition: transform 200ms ease;
 }
 
